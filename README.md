@@ -1,2 +1,0 @@
-baxter_examples
-===============
