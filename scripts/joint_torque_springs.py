@@ -165,7 +165,7 @@ def main():
     args = parser.parse_args()
 
     print("Initializing node... ")
-    rospy.init_node("rethink_rsdk_joint_torque_springs_%s" % (args.limb,))
+    rospy.init_node("rsdk_joint_torque_springs_%s" % (args.limb,))
     dynamic_cfg_srv = Server(JointSpringsExampleConfig,
                              lambda config, level: config)
     js = JointSprings(args.limb, dynamic_cfg_srv)

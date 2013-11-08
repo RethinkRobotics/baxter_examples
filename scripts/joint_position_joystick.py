@@ -180,7 +180,7 @@ def main():
         parser.error("Unsupported joystick type '%s'" % (args.joystick))
 
     print("Initializing node... ")
-    rospy.init_node("rethink_rsdk_joint_position_joystick")
+    rospy.init_node("rsdk_joint_position_joystick")
     print("Getting robot state... ")
     rs = baxter_interface.RobotEnable()
     init_state = rs.state().enabled

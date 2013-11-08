@@ -145,7 +145,7 @@ def map_keyboard():
 
 def main():
     print("Initializing node... ")
-    rospy.init_node("rethink_rsdk_gripper_keyboard")
+    rospy.init_node("rsdk_gripper_keyboard")
 
     map_keyboard()
 

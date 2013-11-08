@@ -49,7 +49,7 @@ def main():
     args = parser.parse_args(rospy.myargv()[1:])
 
     print("Initializing node... ")
-    rospy.init_node("rethink_rsdk_joint_recorder")
+    rospy.init_node("rsdk_joint_recorder")
     print("Getting robot state... ")
     rs = baxter_interface.RobotEnable()
     print("Enabling robot... ")

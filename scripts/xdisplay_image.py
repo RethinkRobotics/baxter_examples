@@ -70,7 +70,7 @@ def main():
     )
     args = parser.parse_args(rospy.myargv()[1:])
 
-    rospy.init_node('xdisplay_image', anonymous=True)
+    rospy.init_node('rsdk_xdisplay_image', anonymous=True)
 
     if not os.access(args.file, os.R_OK):
         rospy.logerr("Cannot read file at '%s'" % (args.file,))

@@ -95,7 +95,7 @@ def main():
     limb = args.limb
 
     print("Initializing node... ")
-    rospy.init_node("rethink_rsdk_joint_trajectory_test_%s" % (limb,))
+    rospy.init_node("rsdk_joint_trajectory_client_%s" % (limb,))
     print("Getting robot state... ")
     rs = baxter_interface.RobotEnable()
     print("Enabling robot... ")

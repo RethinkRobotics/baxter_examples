@@ -95,7 +95,7 @@ def main():
     )
     args = parser.parse_args(rospy.myargv()[1:])
 
-    rospy.init_node('navigator_example', anonymous=True)
+    rospy.init_node('rsdk_navigator_io', anonymous=True)
     args.action()
     return 0
 
