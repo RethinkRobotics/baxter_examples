@@ -72,6 +72,7 @@ class JointSprings(object):
 
         # initialize parameters
         self._springs = dict()
+        self._damping = dict()
         self._start_angles = dict()
 
         # create cuff disable publisher
@@ -90,6 +91,8 @@ class JointSprings(object):
         for joint in self._limb.joint_names():
             self._springs[joint] = self._dyn.config[joint[-2:] +
                                                     '_spring_stiffness']
+            self._damping[joint] = self._dyn.config[joint[-2:] +
+                                                    '_damping_coefficient']
 
     def _update_forces(self):
         """
@@ -105,12 +108,16 @@ class JointSprings(object):
 
         # create our command dict
         cmd = dict()
-        # record current angles
+        # record current angles/velocities
         cur_pos = self._limb.joint_angles()
+        cur_vel = self._limb.joint_velocities()
         # calculate current forces
         for joint in self._start_angles.keys():
+            # spring portion 
             cmd[joint] = self._springs[joint] * (self._start_angles[joint] -
                                                    cur_pos[joint])
+            # damping portion
+            cmd[joint] -= self._damping[joint] * cur_vel[joint]
         # command new joint torques
         self._limb.set_joint_torques(cmd)
 
