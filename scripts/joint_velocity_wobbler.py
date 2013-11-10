@@ -130,7 +130,7 @@ class Wobbler(object):
 
 def main():
     print("Initializing node... ")
-    rospy.init_node("rethink_rsdk_joint_velocity")
+    rospy.init_node("rsdk_joint_velocity_wobbler")
 
     wobbler = Wobbler()
     rospy.on_shutdown(wobbler.clean_shutdown)

@@ -112,7 +112,7 @@ def map_keyboard():
 
 def main():
     print("Initializing node... ")
-    rospy.init_node("rethink_rsdk_joint_position_keyboard")
+    rospy.init_node("rsdk_joint_position_keyboard")
     print("Getting robot state... ")
     rs = baxter_interface.RobotEnable()
     init_state = rs.state().enabled

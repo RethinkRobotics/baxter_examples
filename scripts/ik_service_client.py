@@ -54,7 +54,7 @@ from baxter_core_msgs.srv import (
 
 
 def ik_test(limb):
-    rospy.init_node("rethink_rsdk_inverse_kinematics_test")
+    rospy.init_node("rsdk_ik_service_client")
     ns = "ExternalTools/" + limb + "/PositionKinematicsNode/IKService"
     iksvc = rospy.ServiceProxy(ns, SolvePositionIK)
     ikreq = SolvePositionIKRequest()

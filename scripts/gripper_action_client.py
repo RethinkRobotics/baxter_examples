@@ -88,7 +88,7 @@ def main():
     gripper = args.gripper
 
     print("Initializing node... ")
-    rospy.init_node("rethink_rsdk_gripper_action_test_%s" % (gripper,))
+    rospy.init_node("rsdk_gripper_action_client_%s" % (gripper,))
     print("Getting robot state... ")
     rs = baxter_interface.RobotEnable()
     print("Enabling robot... ")

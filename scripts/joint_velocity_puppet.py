@@ -136,7 +136,7 @@ def main():
         return 1
 
     print("Initializing node... ")
-    rospy.init_node("rethink_rsdk_joint_velocity_puppet")
+    rospy.init_node("rsdk_joint_velocity_puppet")
 
     puppeteer = Puppeteer(args.limb, args.amplification)
     rospy.on_shutdown(puppeteer.clean_shutdown)

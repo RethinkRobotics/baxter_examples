@@ -90,7 +90,7 @@ class Wobbler(object):
 
 def main():
     print("Initializing node... ")
-    rospy.init_node("rethink_rsdk_head_wobbler")
+    rospy.init_node("rsdk_head_wobbler")
 
     wobbler = Wobbler()
     rospy.on_shutdown(wobbler.clean_shutdown)

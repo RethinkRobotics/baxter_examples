@@ -170,7 +170,7 @@ def main():
         parser.error("Unsupported joystick type '%s'" % (args.joystick))
 
     print("Initializing node... ")
-    rospy.init_node("rethink_rsdk_gripper_control_joystick")
+    rospy.init_node("rsdk_gripper_joystick")
 
     map_joystick(joystick)
 

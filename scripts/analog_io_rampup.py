@@ -70,7 +70,7 @@ def main():
     )
     args = parser.parse_args(rospy.myargv()[1:])
 
-    rospy.init_node('test_aio', anonymous=True)
+    rospy.init_node('rsdk_analog_io_rampup', anonymous=True)
     io_component = rospy.get_param('~component_id', args.component_id)
     test_interface(io_component)
 

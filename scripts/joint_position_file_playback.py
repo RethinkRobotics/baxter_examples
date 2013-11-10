@@ -150,7 +150,7 @@ def main():
     args = parser.parse_args(rospy.myargv()[1:])
 
     print("Initializing node... ")
-    rospy.init_node("rethink_rsdk_joint_position_file_playback")
+    rospy.init_node("rsdk_joint_position_file_playback")
     print("Getting robot state... ")
     rs = baxter_interface.RobotEnable()
     init_state = rs.state().enabled
