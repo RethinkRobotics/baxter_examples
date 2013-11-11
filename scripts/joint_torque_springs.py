@@ -113,7 +113,7 @@ class JointSprings(object):
         cur_vel = self._limb.joint_velocities()
         # calculate current forces
         for joint in self._start_angles.keys():
-            # spring portion 
+            # spring portion
             cmd[joint] = self._springs[joint] * (self._start_angles[joint] -
                                                    cur_pos[joint])
             # damping portion

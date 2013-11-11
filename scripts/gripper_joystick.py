@@ -51,10 +51,10 @@ def map_joystick(joystick):
     right = baxter_interface.Gripper('right')
 
     def clean_shutdown():
+        print("\nExiting example...")
         if not init_state:
             print("Disabling robot...")
             rs.disable()
-        print("Exiting example.")
     rospy.on_shutdown(clean_shutdown)
 
     # abbreviations
@@ -69,7 +69,7 @@ def map_joystick(joystick):
             for (test, _cmd, doc) in bindings:
                 if callable(doc):
                     doc = doc()
-                print("%s %s: %s" % (test[0].__name__, str(test[1]), doc))
+                print("%s: %s" % (str(test[1]), doc,))
 
     def l_command(offset):
         left.command_position(left.position() + offset)
@@ -141,10 +141,7 @@ def map_joystick(joystick):
         for (test, cmd, doc) in bindings:
             if test[0](*test[1]):
                 cmd[0](*cmd[1])
-                if callable(doc):
-                    print(doc())
-                else:
-                    print(doc)
+                print(doc)
         rate.sleep()
     rospy.signal_shutdown("Example finished.")
 
