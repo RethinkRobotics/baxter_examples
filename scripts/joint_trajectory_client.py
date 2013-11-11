@@ -30,8 +30,9 @@
 """
 Baxter RSDK Joint Trajectory Controller Test
 """
-from copy import copy
 import argparse
+from copy import copy
+import sys
 
 import rospy
 
@@ -56,7 +57,13 @@ class Trajectory(object):
             FollowJointTrajectoryAction,
         )
         self._goal = FollowJointTrajectoryGoal()
-        self._client.wait_for_server()
+        server_up = self._client.wait_for_server(timeout=rospy.Duration(10.0))
+        if not server_up:
+            rospy.logerr("Timed out waiting for Joint Trajectory"
+                         " Action Server to connect. Start the action server"
+                         " before running example.")
+            rospy.signal_shutdown("Timed out waiting for Action Server")
+            sys.exit(1)
         self.clear(limb)
 
     def add_point(self, positions, time):
@@ -72,8 +79,8 @@ class Trajectory(object):
     def stop(self):
         self._client.cancel_goal()
 
-    def wait(self):
-        self._client.wait_for_result()
+    def wait(self, timeout=15.0):
+        self._client.wait_for_result(timeout=rospy.Duration(timeout))
 
     def result(self):
         return self._client.get_result()
@@ -114,7 +121,7 @@ def main():
     traj.add_point([x * 0.75 for x in p1], 9.0)
     traj.add_point([x * 1.25 for x in p1], 12.0)
     traj.start()
-    traj.wait()
+    traj.wait(15.0)
     print("Exiting - Joint Trajectory Action Test Complete")
 
 if __name__ == "__main__":
