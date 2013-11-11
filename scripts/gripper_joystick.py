@@ -69,7 +69,7 @@ def map_joystick(joystick):
             for (test, _cmd, doc) in bindings:
                 if callable(doc):
                     doc = doc()
-                print("%s: %s" % (str(test[1]), doc,))
+                print("%s: %s" % (str(test[1]), doc))
 
     def l_command(offset):
         left.command_position(left.position() + offset)
@@ -98,8 +98,8 @@ def map_joystick(joystick):
         ((bdn, ['btnUp']), (right.calibrate, []), "right: calibrate"),
         ((bdn, ['rightTrigger']), (left.close, []), "left: close"),
         ((bdn, ['leftTrigger']), (right.close, []), "right: close"),
-        ((bup, ['rightTrigger']), (left.open, []), "left: open"),
-        ((bup, ['leftTrigger']), (right.open, []), "right: open"),
+        ((bup, ['rightTrigger']), (left.open, []), "left: open (release)"),
+        ((bup, ['leftTrigger']), (right.open, []), "right: open (release)"),
         ((bdn, ['rightBumper']), (left.stop, []), "left: stop"),
         ((bdn, ['leftBumper']), (right.stop, []), "right: stop"),
         ((jlo, ['rightStickHorz']), (l_command, [-7.5]),
