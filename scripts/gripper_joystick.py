@@ -71,23 +71,24 @@ def map_joystick(joystick):
                     doc = doc()
                 print("%s: %s" % (str(test[1]), doc))
 
-    def l_command(offset):
-        left.command_position(left.position() + offset)
+    def inc_position(gripper, offset):
+        if gripper.type() != 'electric':
+            capability_warning(gripper, 'set_position')
+            return
+        gripper.command_position(gripper.position() + offset)
 
-    def r_command(offset):
-        right.command_position(right.position() + offset)
+    def inc_holding(gripper, offset):
+        if gripper.type() != 'electric':
+            capability_warning(gripper, 'set_holding_force')
+            return
+        gripper.set_holding_force(gripper.parameters()['holding_force'] + offset)
 
-    def l_holding(offset):
-        left.set_holding_force(left.parameters()['holding_force'] + offset)
+    def inc_velocity(gripper, offset):
+        if gripper.type() != 'electric':
+            capability_warning(gripper, 'set_velocity')
+            return
+        gripper.set_velocity(gripper.parameters()['velocity'] + offset)
 
-    def r_holding(offset):
-        right.set_holding_force(right.parameters()['holding_force'] + offset)
-
-    def l_velocity(offset):
-        left.set_velocity(left.parameters()['velocity'] + offset)
-
-    def r_velocity(offset):
-        right.set_velocity(right.parameters()['velocity'] + offset)
 
     bindings_list = []
     bindings = (
@@ -102,29 +103,29 @@ def map_joystick(joystick):
         ((bup, ['leftTrigger']), (right.open, []), "right: open (release)"),
         ((bdn, ['rightBumper']), (left.stop, []), "left: stop"),
         ((bdn, ['leftBumper']), (right.stop, []), "right: stop"),
-        ((jlo, ['rightStickHorz']), (l_command, [-7.5]),
+        ((jlo, ['rightStickHorz']), (inc_position, [left, -7.5]),
                                      "left:  decrease position"),
-        ((jlo, ['leftStickHorz']), (r_command, [-7.5]),
+        ((jlo, ['leftStickHorz']), (inc_position, [right, -7.5]),
                                     "right:  decrease position"),
-        ((jhi, ['rightStickHorz']), (l_command, [7.5]),
+        ((jhi, ['rightStickHorz']), (inc_position, [left, 7.5]),
                                      "left:  increase position"),
-        ((jhi, ['leftStickHorz']), (r_command, [7.5]),
+        ((jhi, ['leftStickHorz']), (inc_position, [right, 7.5]),
                                      "right:  increase position"),
-        ((jlo, ['rightStickVert']), (l_holding, [-5.0]),
+        ((jlo, ['rightStickVert']), (inc_holding, [left, -5.0]),
                                      "left:  decrease holding force"),
-        ((jlo, ['leftStickVert']), (r_holding, [-5.0]),
+        ((jlo, ['leftStickVert']), (inc_holding, [right, -5.0]),
                                     "right:  decrease holding force"),
-        ((jhi, ['rightStickVert']), (l_holding, [5.0]),
+        ((jhi, ['rightStickVert']), (inc_holding, [left, 5.0]),
                                      "left:  increase holding force"),
-        ((jhi, ['leftStickVert']), (r_holding, [5.0]),
+        ((jhi, ['leftStickVert']), (inc_holding, [right, 5.0]),
                                     "right:  increase holding force"),
-        ((bdn, ['dPadDown']), (l_velocity, [-5.0]),
+        ((bdn, ['dPadDown']), (inc_velocity, [left, -5.0]),
                                "left:  decrease velocity"),
-        ((bdn, ['dPadLeft']), (r_velocity, [-5.0]),
+        ((bdn, ['dPadLeft']), (inc_velocity, [right, -5.0]),
                                "right:  decrease velocity"),
-        ((bdn, ['dPadRight']), (l_velocity, [5.0]),
+        ((bdn, ['dPadRight']), (inc_velocity, [left, 5.0]),
                                 "left:  increase velocity"),
-        ((bdn, ['dPadUp']), (r_velocity, [5.0]),
+        ((bdn, ['dPadUp']), (inc_velocity, [right, 5.0]),
                              "right:  increase velocity"),
         ((bdn, ['function1']), (print_help, [bindings_list]), "help"),
         ((bdn, ['function2']), (print_help, [bindings_list]), "help"),
