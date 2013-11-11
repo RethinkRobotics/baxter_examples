@@ -40,6 +40,7 @@ class Wobbler(object):
         """
         'Wobbles' the head
         """
+        self._done = False
         self._head = baxter_interface.Head()
 
         # verify robot is enabled
@@ -56,7 +57,8 @@ class Wobbler(object):
         maintaining start state
         """
         print("\nExiting example...")
-        self.set_neutral()
+        if self._done:
+            self.set_neutral()
         if not self._init_state and self._rs.state().enabled:
             print("Disabling robot...")
             self._rs.disable()
@@ -85,6 +87,7 @@ class Wobbler(object):
                 control_rate.sleep()
             command_rate.sleep()
 
+        self._done = True
         rospy.signal_shutdown("Example finished.")
 
 
@@ -96,6 +99,7 @@ def main():
     rospy.on_shutdown(wobbler.clean_shutdown)
     print("Wobbling... ")
     wobbler.wobble()
+    print("Done.")
 
 if __name__ == '__main__':
     main()
