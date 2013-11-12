@@ -56,35 +56,40 @@ def map_keyboard():
                (gripper.name, gripper.type(), cmd))
         rospy.logwarn(msg)
 
-    def inc_position(gripper, offset):
+    def offset_position(gripper, offset):
         if gripper.type() != 'electric':
-            capability_warning(gripper, 'set_position')
+            capability_warning(gripper, 'command_position')
             return
-        gripper.command_position(gripper.position() + offset)
+        current = gripper.position()
+        gripper.command_position(current + offset)
 
-    def inc_holding(gripper, offset):
+    def offset_holding(gripper, offset):
         if gripper.type() != 'electric':
             capability_warning(gripper, 'set_holding_force')
             return
-        gripper.set_holding_force(gripper.parameters()['holding_force'] + offset)
+        current = gripper.parameters()['holding_force']
+        gripper.set_holding_force(current + offset)
 
-    def inc_moving(gripper, offset):
+    def offset_moving(gripper, offset):
         if gripper.type() != 'electric':
             capability_warning(gripper, 'set_moving_force')
             return
-        gripper.set_moving_force(gripper.parameters()['moving_force'] + offset)
+        current = gripper.parameters()['moving_force']
+        gripper.set_moving_force(current + offset)
 
-    def inc_velocity(gripper, offset):
+    def offset_velocity(gripper, offset):
         if gripper.type() != 'electric':
             capability_warning(gripper, 'set_velocity')
             return
-        gripper.set_velocity(gripper.parameters()['velocity'] + offset)
+        current = gripper.parameters()['velocity']
+        gripper.set_velocity(current + offset)
 
-    def inc_dead_band(gripper, offset):
+    def offset_dead_band(gripper, offset):
         if gripper.type() != 'electric':
             capability_warning(gripper, 'set_dead_band')
             return
-        gripper.set_dead_band(gripper.parameters()['dead_zone'] + offset)
+        current = gripper.parameters()['dead_zone']
+        gripper.set_dead_band(current + offset)
 
     bindings = {
     #   key: (function, args, description)
@@ -96,32 +101,32 @@ def map_keyboard():
         'Q': (right.close, [], "right: close"),
         'w': (left.open, [], "left: open"),
         'W': (right.open, [], "right: open"),
-        '[': (left.set_velocity, [100.0], "left: set 100% velocity"),
-        '{': (right.set_velocity, [100.0], "right: set 100% velocity"),
-        ']': (left.set_velocity, [30.0], "left: set 30% velocity"),
-        '}': (right.set_velocity, [30.0], "right: set 30% velocity"),
+        '[': (left.set_velocity, [100.0], "left:  set 100% velocity"),
+        '{': (right.set_velocity, [100.0], "right:  set 100% velocity"),
+        ']': (left.set_velocity, [30.0], "left:  set 30% velocity"),
+        '}': (right.set_velocity, [30.0], "right:  set 30% velocity"),
         's': (left.stop, [], "left: stop"),
         'S': (right.stop, [], "right: stop"),
-        'z': (inc_dead_band, [left, -1.0], "left: decrease dead band"),
-        'Z': (inc_dead_band, [right, -1.0], "right: decrease dead band"),
-        'x': (inc_dead_band, [left, 1.0], "left: increase dead band"),
-        'X': (inc_dead_band, [right, 1.0], "right: increase dead band"),
-        'f': (inc_moving, [left, -5.0], "left: decrease moving force"),
-        'F': (inc_moving, [right, -5.0], "right:  decrease moving force"),
-        'g': (inc_moving, [left, 5.0], "left:  increase moving force"),
-        'G': (inc_moving, [right, 5.0], "right:  increase moving force"),
-        'h': (inc_holding, [left, -5.0], "left:  decrease holding force"),
-        'H': (inc_holding, [right, -5.0], "right:  decrease holding force"),
-        'j': (inc_holding, [left, 5.0], "left:  increase holding force"),
-        'J': (inc_holding, [right, 5.0], "right:  increase holding force"),
-        'v': (inc_velocity, [left, -5.0], "left:  decrease velocity"),
-        'V': (inc_velocity, [right, -5.0], "right:  decrease velocity"),
-        'b': (inc_velocity, [left, 5.0], "left:  increase velocity"),
-        'B': (inc_velocity, [right, 5.0], "right:  increase velocity"),
-        'u': (inc_position, [left, -10.0], "left:  decrease position"),
-        'U': (inc_position, [right, -10.0], "right:  decrease position"),
-        'i': (inc_position, [left, 10.0], "left:  increase position"),
-        'I': (inc_position, [right, 10.0], "right:  increase position"),
+        'z': (offset_dead_band, [left, -1.0], "left:  decrease dead band"),
+        'Z': (offset_dead_band, [right, -1.0], "right:  decrease dead band"),
+        'x': (offset_dead_band, [left, 1.0], "left:  increase dead band"),
+        'X': (offset_dead_band, [right, 1.0], "right:  increase dead band"),
+        'f': (offset_moving, [left, -5.0], "left:  decrease moving force"),
+        'F': (offset_moving, [right, -5.0], "right:  decrease moving force"),
+        'g': (offset_moving, [left, 5.0], "left:  increase moving force"),
+        'G': (offset_moving, [right, 5.0], "right:  increase moving force"),
+        'h': (offset_holding, [left, -5.0], "left:  decrease holding force"),
+        'H': (offset_holding, [right, -5.0], "right:  decrease holding force"),
+        'j': (offset_holding, [left, 5.0], "left:  increase holding force"),
+        'J': (offset_holding, [right, 5.0], "right:  increase holding force"),
+        'v': (offset_velocity, [left, -5.0], "left:  decrease velocity"),
+        'V': (offset_velocity, [right, -5.0], "right:  decrease velocity"),
+        'b': (offset_velocity, [left, 5.0], "left:  increase velocity"),
+        'B': (offset_velocity, [right, 5.0], "right:  increase velocity"),
+        'u': (offset_position, [left, -10.0], "left:  decrease position"),
+        'U': (offset_position, [right, -10.0], "right:  decrease position"),
+        'i': (offset_position, [left, 10.0], "left:  increase position"),
+        'I': (offset_position, [right, 10.0], "right:  increase position"),
     }
 
     done = False

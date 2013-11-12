@@ -71,24 +71,31 @@ def map_joystick(joystick):
                     doc = doc()
                 print("%s: %s" % (str(test[1]), doc))
 
-    def inc_position(gripper, offset):
+    def capability_warning(gripper, cmd):
+        msg = ("%s %s - not capable of '%s' command" %
+               (gripper.name, gripper.type(), cmd))
+        print msg
+
+    def offset_position(gripper, offset):
         if gripper.type() != 'electric':
             capability_warning(gripper, 'set_position')
             return
-        gripper.command_position(gripper.position() + offset)
+        current = gripper.position()
+        gripper.command_position(current + offset)
 
-    def inc_holding(gripper, offset):
+    def offset_holding(gripper, offset):
         if gripper.type() != 'electric':
             capability_warning(gripper, 'set_holding_force')
             return
-        gripper.set_holding_force(gripper.parameters()['holding_force'] + offset)
+        current = gripper.parameters()['holding_force']
+        gripper.set_holding_force(current + offset)
 
-    def inc_velocity(gripper, offset):
+    def offset_velocity(gripper, offset):
         if gripper.type() != 'electric':
             capability_warning(gripper, 'set_velocity')
             return
-        gripper.set_velocity(gripper.parameters()['velocity'] + offset)
-
+        current = gripper.parameters()['velocity']
+        gripper.set_velocity(current + offset)
 
     bindings_list = []
     bindings = (
@@ -103,29 +110,29 @@ def map_joystick(joystick):
         ((bup, ['leftTrigger']), (right.open, []), "right: open (release)"),
         ((bdn, ['rightBumper']), (left.stop, []), "left: stop"),
         ((bdn, ['leftBumper']), (right.stop, []), "right: stop"),
-        ((jlo, ['rightStickHorz']), (inc_position, [left, -7.5]),
+        ((jlo, ['rightStickHorz']), (offset_position, [left, -7.5]),
                                      "left:  decrease position"),
-        ((jlo, ['leftStickHorz']), (inc_position, [right, -7.5]),
+        ((jlo, ['leftStickHorz']), (offset_position, [right, -7.5]),
                                     "right:  decrease position"),
-        ((jhi, ['rightStickHorz']), (inc_position, [left, 7.5]),
+        ((jhi, ['rightStickHorz']), (offset_position, [left, 7.5]),
                                      "left:  increase position"),
-        ((jhi, ['leftStickHorz']), (inc_position, [right, 7.5]),
+        ((jhi, ['leftStickHorz']), (offset_position, [right, 7.5]),
                                      "right:  increase position"),
-        ((jlo, ['rightStickVert']), (inc_holding, [left, -5.0]),
+        ((jlo, ['rightStickVert']), (offset_holding, [left, -5.0]),
                                      "left:  decrease holding force"),
-        ((jlo, ['leftStickVert']), (inc_holding, [right, -5.0]),
+        ((jlo, ['leftStickVert']), (offset_holding, [right, -5.0]),
                                     "right:  decrease holding force"),
-        ((jhi, ['rightStickVert']), (inc_holding, [left, 5.0]),
+        ((jhi, ['rightStickVert']), (offset_holding, [left, 5.0]),
                                      "left:  increase holding force"),
-        ((jhi, ['leftStickVert']), (inc_holding, [right, 5.0]),
+        ((jhi, ['leftStickVert']), (offset_holding, [right, 5.0]),
                                     "right:  increase holding force"),
-        ((bdn, ['dPadDown']), (inc_velocity, [left, -5.0]),
+        ((bdn, ['dPadDown']), (offset_velocity, [left, -5.0]),
                                "left:  decrease velocity"),
-        ((bdn, ['dPadLeft']), (inc_velocity, [right, -5.0]),
+        ((bdn, ['dPadLeft']), (offset_velocity, [right, -5.0]),
                                "right:  decrease velocity"),
-        ((bdn, ['dPadRight']), (inc_velocity, [left, 5.0]),
+        ((bdn, ['dPadRight']), (offset_velocity, [left, 5.0]),
                                 "left:  increase velocity"),
-        ((bdn, ['dPadUp']), (inc_velocity, [right, 5.0]),
+        ((bdn, ['dPadUp']), (offset_velocity, [right, 5.0]),
                              "right:  increase velocity"),
         ((bdn, ['function1']), (print_help, [bindings_list]), "help"),
         ((bdn, ['function2']), (print_help, [bindings_list]), "help"),
