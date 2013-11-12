@@ -57,6 +57,10 @@ def map_joystick(joystick):
         print("Exiting example.")
     rospy.on_shutdown(clean_shutdown)
 
+    # decrease position dead_band
+    left.set_dead_band(2.5)
+    right.set_dead_band(2.5)
+
     # abbreviations
     jhi = lambda s: joystick.stick_value(s) > 0
     jlo = lambda s: joystick.stick_value(s) < 0
@@ -102,13 +106,13 @@ def map_joystick(joystick):
         ((bup, ['leftTrigger']), (right.open, []), "right: open"),
         ((bdn, ['rightBumper']), (left.stop, []), "left: stop"),
         ((bdn, ['leftBumper']), (right.stop, []), "right: stop"),
-        ((jlo, ['rightStickHorz']), (l_command, [-20.0]),
+        ((jlo, ['rightStickHorz']), (l_command, [-15.0]),
                                      "left:  decrease position"),
-        ((jlo, ['leftStickHorz']), (r_command, [-20.0]),
+        ((jlo, ['leftStickHorz']), (r_command, [-15.0]),
                                     "right:  decrease position"),
-        ((jhi, ['rightStickHorz']), (l_command, [20.0]),
+        ((jhi, ['rightStickHorz']), (l_command, [15.0]),
                                      "left:  increase position"),
-        ((jhi, ['leftStickHorz']), (r_command, [20.0]),
+        ((jhi, ['leftStickHorz']), (r_command, [15.0]),
                                      "right:  increase position"),
         ((jlo, ['rightStickVert']), (l_holding, [-5.0]),
                                      "left:  decrease holding force"),
