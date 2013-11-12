@@ -58,6 +58,7 @@ class GripperClient(object):
         if not self._client.wait_for_server(rospy.Duration(10.0)):
             rospy.logerr("Exiting - %s Gripper Action Server Not Found" %
                          (gripper.capitalize(),))
+            rospy.signal_shutdown("Action Server not found")
             sys.exit(1)
         self.clear()
 
@@ -69,8 +70,8 @@ class GripperClient(object):
     def stop(self):
         self._client.cancel_goal()
 
-    def wait(self):
-        self._client.wait_for_result()
+    def wait(self, timeout=5.0):
+        self._client.wait_for_result(timeout=rospy.Duration(timeout))
         return self._client.get_result()
 
     def clear(self):
