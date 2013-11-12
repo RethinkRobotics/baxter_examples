@@ -113,10 +113,10 @@ def map_keyboard():
         'V': (l_velocity, [-5.0], "right:  decrease velocity"),
         'b': (l_velocity, [5.0], "left:  increase velocity"),
         'B': (r_velocity, [5.0], "right:  increase velocity"),
-        'u': (l_command, [-10.0], "left:  decrease position"),
-        'U': (r_command, [-10.0], "right:  decrease position"),
-        'i': (l_command, [10.0], "left:  increase position"),
-        'I': (r_command, [10.0], "right:  increase position"),
+        'u': (l_command, [-20.0], "left:  decrease position"),
+        'U': (r_command, [-20.0], "right:  decrease position"),
+        'i': (l_command, [20.0], "left:  increase position"),
+        'I': (r_command, [20.0], "right:  increase position"),
     }
 
     done = False
