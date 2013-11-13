@@ -273,10 +273,10 @@ class PS3Controller(Joystick):
         self._controls['btnDown'] = (msg.buttons[14] == 1)
         self._controls['btnRight'] = (msg.buttons[13] == 1)
 
-        self._controls['dPadUp'] = (msg.axes[4] > 0.5)
-        self._controls['dPadDown'] = (msg.axes[6] < -0.5)
-        self._controls['dPadLeft'] = (msg.axes[7] > 0.5)
-        self._controls['dPadRight'] = (msg.axes[5] < -0.5)
+        self._controls['dPadUp'] = (msg.buttons[4] == 1)
+        self._controls['dPadDown'] = (msg.buttons[6] == 1)
+        self._controls['dPadLeft'] = (msg.buttons[7] == 1)
+        self._controls['dPadRight'] = (msg.buttons[5] == 1)
 
         self._controls['leftStickHorz'] = msg.axes[0]
         self._controls['leftStickVert'] = msg.axes[1]

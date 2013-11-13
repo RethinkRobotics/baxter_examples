@@ -72,7 +72,7 @@ class Trajectory(object):
         r_server_up = self._right_client.wait_for_server(rospy.Duration(1.0))
         if not l_server_up or not r_server_up:
             msg = ("Action server not available."
-                   " Verify controller availability.")
+                   " Verify action server availability.")
             rospy.logerr(msg)
             rospy.signal_shutdown(msg)
             sys.exit(1)
@@ -105,7 +105,7 @@ class Trajectory(object):
         self._r_grip = FollowJointTrajectoryGoal()
 
         #param namespace
-        self._param_ns = '/rethink_rsdk_joint_trajectory_action_server/'
+        self._param_ns = '/rsdk_joint_trajectory_action_server/'
 
         #gripper control rate
         self._gripper_rate = 20.0  # Hz
