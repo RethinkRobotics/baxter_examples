@@ -159,7 +159,27 @@ def map_joystick(joystick):
 
 
 def main():
-    parser = argparse.ArgumentParser()
+    """RSDK Gripper Example: Joystick Control
+
+    Use a game controller to control the grippers.
+
+    Attach a game controller to your dev machine and run this
+    example along with the ROS joy_node to control Baxter's
+    grippers using the joysticks and buttons. Be sure to provide
+    the *joystick* type you are using as an argument to setup
+    appropriate key mappings.
+
+    Uses the baxter_interface.Gripper class and the helper classes
+    in baxter_external_devices.Joystick.
+    """
+    epilog = """
+See help inside the example with the "Start" button for controller
+key bindings.
+    """
+    arg_fmt = argparse.RawDescriptionHelpFormatter
+    parser = argparse.ArgumentParser(formatter_class=arg_fmt,
+                                     description=main.__doc__,
+                                     epilog=epilog)
     required = parser.add_argument_group('required arguments')
     required.add_argument(
         '-j', '--joystick', required=True, choices=['xbox', 'logitech', 'ps3'],

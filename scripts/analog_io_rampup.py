@@ -62,11 +62,34 @@ def test_interface(io_component='torso_fan'):
 
 
 def main():
-    arg_fmt = argparse.ArgumentDefaultsHelpFormatter
-    parser = argparse.ArgumentParser(formatter_class=arg_fmt)
+    """RSDK Analog IO Ramp Example
+
+    Ramps the output of an AnalogIO component from 0 to 100,
+    and then back down again. Demonstrates the use of the
+    baxter_interface.AnalogIO class.
+
+    Run this example and listen to the fan as output changes.
+    """
+    epilog = """
+ROS Parameters:
+  ~component_id        - name of AnalogIO component to use
+
+Baxter AnalogIO
+    Note that 'AnalogIO' components are only those that use
+    the custom ROS Messages baxter_core_msgs/AnalogIOState
+    and baxter_core_msgs/AnalogOutputCommand.
+
+    AnalogIO component names can be found on the Wiki or by
+    echoing the names field of the analog_io_states topic:
+      $ rostopic echo -n 1 /robot/analog_io_states/names
+    """
+    arg_fmt = argparse.RawDescriptionHelpFormatter
+    parser = argparse.ArgumentParser(formatter_class=arg_fmt,
+                                     description=main.__doc__,
+                                     epilog=epilog)
     parser.add_argument(
         '-c', '--component', dest='component_id', default='torso_fan',
-        help='name of Analog IO component to use'
+        help='name of Analog IO component to use (default:= torso_fan)'
     )
     args = parser.parse_args(rospy.myargv()[1:])
 

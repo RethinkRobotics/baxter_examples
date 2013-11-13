@@ -115,10 +115,21 @@ class Puppeteer(object):
 
 
 def main():
+    """RSDK Joint Velocity Puppet Example
+
+    Mirrors the joint velocities sensed on one arm as commands on the
+    other arm. Demonstrates the use of Joint Velocity Control mode.
+
+    Run this example, passing the 'puppeteer' limb as an argument,
+    then move that limb around in zero-g mode to see the joint
+    velocities mirrored out on the other arm.
+    """
     max_gain = 3.0
     min_gain = 0.1
 
-    parser = argparse.ArgumentParser()
+    arg_fmt = argparse.RawDescriptionHelpFormatter
+    parser = argparse.ArgumentParser(formatter_class=arg_fmt,
+                                     description=main.__doc__)
     required = parser.add_argument_group('required arguments')
     required.add_argument(
         "-l", "--limb", required=True, choices=['left', 'right'],

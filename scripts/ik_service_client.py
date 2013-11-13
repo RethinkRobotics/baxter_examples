@@ -28,11 +28,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 """
-Baxter RSDK Inverse Kinematics Example:
- A simple python example of using the Rethink IK
- to get the joint angles for a Cartesian Pose or
- to just check if a pose is valid/possible.
-
+Baxter RSDK Inverse Kinematics Example
 """
 import argparse
 import sys
@@ -113,7 +109,21 @@ def ik_test(limb):
 
 
 def main():
-    parser = argparse.ArgumentParser()
+    """RSDK Inverse Kinematics Example
+
+    A simple example of using the Rethink Simple IK Service
+    to get the joint angles for a Cartesian Pose or to just
+    check if a pose is valid/possible.
+
+    Run this example, passing the *limb* to test, and the
+    example will call the Service with a sample Cartesian
+    Pose, pre-defined in the example code, printing the
+    response of whether a valid joint solution was found,
+    and if so, the corresponding joint angles.
+    """
+    arg_fmt = argparse.RawDescriptionHelpFormatter
+    parser = argparse.ArgumentParser(formatter_class=arg_fmt,
+                                     description=main.__doc__)
     parser.add_argument(
         '-l', '--limb', choices=['left', 'right'], required=True,
         help="the limb to test"

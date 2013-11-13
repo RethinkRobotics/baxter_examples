@@ -28,9 +28,6 @@
 # POSSIBILITY OF SUCH DAMAGE.
 """
 Baxter RSDK Joint Torque Example: joint springs
-Moves the specified limb to a neutral location and enters torque control mode
-Attaching virtual springs (Hooke's law) to each joint maintaining the start
-position
 """
 
 import argparse
@@ -164,7 +161,20 @@ class JointSprings(object):
 
 
 def main():
-    parser = argparse.ArgumentParser()
+    """RSDK Joint Torque Example: Joint Springs
+
+    Moves the specified limb to a neutral location and enters
+    torque control mode, attaching virtual springs (Hooke's Law)
+    to each joint maintaining the start position.
+
+    Run this example on a specified limb and then push the arm
+    around to feel the virtual joint springs. You can adjust
+    the spring constant and damping coefficient for each joint
+    using dynamic_reconfigure.
+    """
+    arg_fmt = argparse.RawDescriptionHelpFormatter
+    parser = argparse.ArgumentParser(formatter_class=arg_fmt,
+                                     description=main.__doc__)
     parser.add_argument(
         '-l', '--limb', dest='limb', required=True, choices=['left', 'right'],
         help='limb on which to attach joint springs'

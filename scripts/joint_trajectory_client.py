@@ -28,7 +28,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 """
-Baxter RSDK Joint Trajectory Controller Test
+Baxter RSDK Joint Trajectory Action Client Example
 """
 import argparse
 from copy import copy
@@ -92,7 +92,20 @@ class Trajectory(object):
 
 
 def main():
-    parser = argparse.ArgumentParser()
+    """RSDK Joint Trajectory Action Client Example
+
+    Creates a client of the Joint Trajectory Action Server
+    to send commands of standard action type,
+    control_msgs/FollowJointTrajectoryAction.
+
+    Make sure to start the joint_trajectory_action_server.py
+    first. Then run this example on a specified limb to
+    command a short series of trajectory points for the arm
+    to follow.
+    """
+    arg_fmt = argparse.RawDescriptionHelpFormatter
+    parser = argparse.ArgumentParser(formatter_class=arg_fmt,
+                                     description=main.__doc__)
     required = parser.add_argument_group('required arguments')
     required.add_argument(
         '-l', '--limb', required=True, choices=['left', 'right'],

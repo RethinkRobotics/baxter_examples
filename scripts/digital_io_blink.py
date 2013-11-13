@@ -53,12 +53,39 @@ def test_interface(io_component='left_itb_light_outer'):
 
 
 def main():
-    show_defaults = argparse.ArgumentDefaultsHelpFormatter
-    parser = argparse.ArgumentParser(formatter_class=show_defaults)
+    """RSDK Digital IO Blink Example
+
+    Turns the output of a DigitalIO component on then off again
+    while printing the state at each step. Simple demonstration
+    of using the baxter_interface.DigitalIO class.
+
+    Run this example with default arguments and watch the light
+    on the left torso Navigator blink on and off while the console
+    echos the state. Use the component_id argument or ROS Parameter
+    to change the DigitalIO component used.
+    """
+    epilog = """
+ROS Parameters:
+  ~component_id        - name of DigitalIO component to use
+
+Baxter DigitalIO
+    Note that 'DigitalIO' components are only those that use
+    the custom ROS Messages baxter_core_msgs/DigitalIOState
+    and baxter_core_msgs/DigitalOutputCommand.
+
+    Component names can be found on the Wiki, or by echoing
+    the names field of the digital_io_states topic:
+      $ rostopic echo -n 1 /robot/digital_io_states/names
+    """
+    arg_fmt = argparse.RawDescriptionHelpFormatter
+    parser = argparse.ArgumentParser(formatter_class=arg_fmt,
+                                     description=main.__doc__,
+                                     epilog=epilog)
     parser.add_argument(
         '-c', '--component', dest='component_id',
         default='left_itb_light_outer',
-        help='name of Digital IO component to use'
+        help=('name of Digital IO component to use'
+              ' (default: left_itb_light_outer)')
     )
     args = parser.parse_args(rospy.myargv()[1:])
 

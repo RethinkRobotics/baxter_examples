@@ -79,7 +79,19 @@ class GripperClient(object):
 
 
 def main():
-    parser = argparse.ArgumentParser()
+    """RSDK Gripper Action Client Example
+
+    Demonstrates creating a client of the Gripper Action Server,
+    which enables sending commands of standard action type
+    control_msgs/GripperCommand.
+
+    The example will command the grippers to a number of positions
+    while specifying moving force or vacuum sensor threshold. Be sure
+    to start Baxter's gripper_action_server before running this example.
+    """
+    arg_fmt = argparse.RawDescriptionHelpFormatter
+    parser = argparse.ArgumentParser(formatter_class=arg_fmt,
+                                     description=main.__doc__)
     parser.add_argument(
         '-g', '--gripper', dest='gripper', required=True,
         choices=['left', 'right'],

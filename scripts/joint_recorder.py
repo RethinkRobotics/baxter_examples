@@ -36,7 +36,28 @@ from baxter_examples import JointRecorder
 
 
 def main():
-    parser = argparse.ArgumentParser()
+    """RSDK Joint Recorder Example
+
+    Record joint and gripper positions to a file for later
+    play back.
+
+    Run this example while moving the robot's arms and grippers
+    to record a time series of joint and gripper positions to a
+    new csv file with the provided *filename*. This example can
+    be run in parallel with any other example or just by itself
+    (moving the arms by hand).
+
+    You can later play the movements pack using one of the
+    *_file_playback examples.
+    """
+    epilog = """
+Related examples:
+  joint_position_playback.py; joint_trajectory_file_playback.py.
+    """
+    arg_fmt = argparse.RawDescriptionHelpFormatter
+    parser = argparse.ArgumentParser(formatter_class=arg_fmt,
+                                     description=main.__doc__,
+                                     epilog=epilog)
     required = parser.add_argument_group('required arguments')
     required.add_argument(
         '-f', '--file', dest='filename', required=True,
