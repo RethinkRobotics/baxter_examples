@@ -1,10 +1,10 @@
 <launch>
 
+  <!-- Joystick Type Argument: {xbox, ps3, logitech} -->
+  <arg name="joystick" />
+
   <!-- Joystick Device Argument-->
   <arg name="dev" default="/dev/input/js0" />
-
-  <!-- Joystick Argument -->
-  <arg name="joystick" default="xbox" />
 
   <!-- Start the Joy Node -->
   <node name="joy_node" pkg="joy"
