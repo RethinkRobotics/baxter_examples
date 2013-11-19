@@ -46,7 +46,7 @@ def send_image(path):
     Send the image located at the specified path to the head
     display on Baxter.
 
-    @param path - path to the image file to load and send
+    @param path: path to the image file to load and send
     """
     img = cv.LoadImage(path)
     msg = cv_bridge.CvBridge().cv_to_imgmsg(img, encoding="bgr8")
