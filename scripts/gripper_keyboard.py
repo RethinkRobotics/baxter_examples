@@ -30,6 +30,8 @@
 """
 Baxter RSDK Gripper Example: keyboard
 """
+import argparse
+
 import rospy
 
 import baxter_interface
@@ -154,6 +156,25 @@ def map_keyboard():
 
 
 def main():
+    """RSDK Gripper Example: Keyboard Control
+
+    Use your dev machine's keyboard to control and configure
+    Baxter's grippers.
+
+    Run this example to command various gripper movements while
+    adjusting gripper parameters, including calibration, velocity,
+    and force. Uses the baxter_interface.Gripper class and the
+    helper function, baxter_external_devices.getch.
+    """
+    epilog = """
+See help inside the example with the '?' key for key bindings.
+    """
+    arg_fmt = argparse.RawDescriptionHelpFormatter
+    parser = argparse.ArgumentParser(formatter_class=arg_fmt,
+                                     description=main.__doc__,
+                                     epilog=epilog)
+    parser.parse_args(rospy.myargv()[1:])
+
     print("Initializing node... ")
     rospy.init_node("rsdk_gripper_keyboard")
 

@@ -138,7 +138,28 @@ def map_file(filename, loops=1):
 
 
 def main():
-    parser = argparse.ArgumentParser()
+    """RSDK Joint Position Example: File Playback
+
+    Uses Joint Position Control mode to play back a series of
+    recorded joint and gripper positions.
+
+    Run the joint_recorder.py example first to create a recording
+    file for use with this example. This example uses position
+    control to replay the recorded positions in sequence.
+
+    Note: This version of the playback example simply drives the
+    joints towards the next position at each time stamp. Because
+    it uses Position Control it will not attempt to adjust the
+    movement speed to hit set points "on time".
+    """
+    epilog = """
+Related examples:
+  joint_recorder.py; joint_trajectory_file_playback.py.
+    """
+    arg_fmt = argparse.RawDescriptionHelpFormatter
+    parser = argparse.ArgumentParser(formatter_class=arg_fmt,
+                                     description=main.__doc__,
+                                     epilog=epilog)
     parser.add_argument(
         '-f', '--file', metavar='PATH', required=True,
         help='path to input file'

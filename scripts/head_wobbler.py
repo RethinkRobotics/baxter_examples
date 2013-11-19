@@ -27,6 +27,7 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
+import argparse
 import random
 
 import rospy
@@ -92,6 +93,16 @@ class Wobbler(object):
 
 
 def main():
+    """RSDK Head Example: Wobbler
+
+    Nods the head and pans side-to-side towards random angles.
+    Demonstrates the use of the baxter_interface.Head class.
+    """
+    arg_fmt = argparse.RawDescriptionHelpFormatter
+    parser = argparse.ArgumentParser(formatter_class=arg_fmt,
+                                     description=main.__doc__)
+    parser.parse_args(rospy.myargv()[1:])
+
     print("Initializing node... ")
     rospy.init_node("rsdk_head_wobbler")
 

@@ -28,8 +28,6 @@
 # POSSIBILITY OF SUCH DAMAGE.
 """
 Baxter RSDK Joint Trajectory Example: file playback
-Plays back joint positions honoring timestamps recorded
-Via joint_position example - joint_position recorder.py <filename>
 """
 
 import argparse
@@ -282,7 +280,28 @@ class Trajectory(object):
 
 
 def main():
-    parser = argparse.ArgumentParser()
+    """RSDK Joint Trajectory Example: File Playback
+
+    Plays back joint positions honoring timestamps recorded
+    via the joint_recorder example.
+
+    Run the joint_recorder.py example first to create a recording
+    file for use with this example. Then make sure to start the
+    joint_trajectory_action_server before running this example.
+
+    This example will use the joint trajectory action server
+    with velocity control to follow the positions and times of
+    the recorded motion, accurately replicating movement speed
+    necessary to hit each trajectory point on time.
+    """
+    epilog = """
+Related examples:
+  joint_recorder.py; joint_position_file_playback.py.
+    """
+    arg_fmt = argparse.RawDescriptionHelpFormatter
+    parser = argparse.ArgumentParser(formatter_class=arg_fmt,
+                                     description=main.__doc__,
+                                     epilog=epilog)
     parser.add_argument(
         '-f', '--file', metavar='PATH', required=True,
         help='path to input file'
