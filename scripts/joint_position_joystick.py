@@ -40,9 +40,9 @@ import baxter_external_devices
 
 def rotate(l):
     """
-    @param l - the list
-
     Rotates a list left.
+
+    @param l: the list
     """
     if len(l):
         v = l[0]
@@ -52,13 +52,13 @@ def rotate(l):
 
 def set_j(cmd, limb, joints, index, delta):
     """
-    @param cmd - the joint command dictionary
-    @param limb - the limb to get the pos from
-    @param joints - a list of joint names
-    @param index - the index in the list of names
-    @param delta - delta to update the joint by
-
     Set the selected joint to current pos + delta.
+
+    @param cmd: the joint command dictionary
+    @param limb: the limb to get the pos from
+    @param joints: a list of joint names
+    @param index: the index in the list of names
+    @param delta: delta to update the joint by
 
     joint/index is to make this work in the bindings.
     """
@@ -68,9 +68,9 @@ def set_j(cmd, limb, joints, index, delta):
 
 def map_joystick(joystick):
     """
-    @param joystick - an instance of a Joystick
-
     Maps joystick input to joint position commands.
+
+    @param joystick: an instance of a Joystick
     """
     left = baxter_interface.Limb('left')
     right = baxter_interface.Limb('right')

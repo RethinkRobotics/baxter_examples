@@ -128,13 +128,13 @@ class Trajectory(object):
 
     def _clean_line(self, line, joint_names):
         """
-        @param line - the line described in a list to process
-        @param joint_names - joint name keys
-
-        @return command - returns dictionary {joint: value} of valid commands
-        @return line - returns list of current line values stripped of commas
-
         Cleans a single line of recorded joint positions
+
+        @param line: the line described in a list to process
+        @param joint_names: joint name keys
+
+        @return command: returns dictionary {joint: value} of valid commands
+        @return line: returns list of current line values stripped of commas
         """
         def try_float(x):
             try:
@@ -153,11 +153,11 @@ class Trajectory(object):
 
     def _add_point(self, positions, side, time):
         """
-        @param positions - joint positions
-        @param side - limb to command point
-        @param time - time from start for point in seconds
-
         Appends trajectory with new point
+
+        @param positions: joint positions
+        @param side: limb to command point
+        @param time: time from start for point in seconds
         """
         #creates a point in trajectory with time_from_start and positions
         point = JointTrajectoryPoint()
@@ -174,9 +174,9 @@ class Trajectory(object):
 
     def parse_file(self, filename):
         """
-        @param filename - input filename
-
         Parses input file into FollowJointTrajectoryGoal format
+
+        @param filename: input filename
         """
         #open recorded file
         with open(filename, 'r') as f:

@@ -49,8 +49,10 @@ class GripperConnect(object):
 
     def __init__(self, arm, lights=True):
         """
-        @param arm (str):     arm of gripper to control {left, right}
-        @param lights (bool): if lights should activate on cuff grasp
+        @type arm: str
+        @param arm: arm of gripper to control {left, right}
+        @type lights: bool
+        @param lights: if lights should activate on cuff grasp
         """
         self._arm = arm
         # inputs

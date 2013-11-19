@@ -43,10 +43,10 @@ class Puppeteer(object):
 
     def __init__(self, limb, amplification=1.0):
         """
-        @param limb - the control arm used to puppet the other
-        @param amplification - factor by which to amplify the arm movement
-
         Puppets one arm with the other.
+
+        @param limb: the control arm used to puppet the other
+        @param amplification: factor by which to amplify the arm movement
         """
         puppet_arm = {"left": "right", "right": "left"}
         self._control_limb = limb

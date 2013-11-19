@@ -110,11 +110,14 @@ class Joystick(object):
 
     def __init__(self, scale=1.0, offset=0.0, deadband=0.1):
         """
-        @param scale (float) - scaling applied to joystick values [1.0]
-        @param offset (float) - joystick offset values, post-scaling [0.0]
-        @param deadband (float) - deadband post scaling and offset [0.1]
-
         Maps joystick input to robot control.
+
+        @type scale: float
+        @param scale: scaling applied to joystick values [1.0]
+        @type offset: float
+        @param offset: joystick offset values, post-scaling [0.0]
+        @type deadband: float
+        @param deadband: deadband post scaling and offset [0.1]
 
         Raw joystick valuess are in [1.0...-1.0].
         """

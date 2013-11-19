@@ -41,7 +41,8 @@ import baxter_external_devices
 def map_joystick(joystick):
     """
     maps joystick input to gripper commands
-    @param joystick - an instance of a Joystick
+
+    @param joystick: an instance of a Joystick
     """
     # initialize interfaces
     print("Getting robot state... ")

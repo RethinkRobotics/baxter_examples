@@ -50,8 +50,10 @@ from baxter_examples.cfg import (
 
 class JointSprings(object):
     """
-    @param limb - limb on which to run joint springs example
-    @param reconfig_server - dynamic reconfigure server
+    Virtual Joint Springs class for torque example.
+
+    @param limb: limb on which to run joint springs example
+    @param reconfig_server: dynamic reconfigure server
 
     JointSprings class contains methods for the joint torque example allowing
     moving the limb to a neutral location, entering torque mode, and attaching
