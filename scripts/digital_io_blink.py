@@ -53,14 +53,14 @@ def test_interface(io_component='left_itb_light_outer'):
 
 
 def main():
-    """RSDK Digital IO Blink Example
+    """RSDK Digital IO Example: Blink
 
     Turns the output of a DigitalIO component on then off again
     while printing the state at each step. Simple demonstration
     of using the baxter_interface.DigitalIO class.
 
     Run this example with default arguments and watch the light
-    on the left torso Navigator blink on and off while the console
+    on the left arm Navigator blink on and off while the console
     echos the state. Use the component_id argument or ROS Parameter
     to change the DigitalIO component used.
     """

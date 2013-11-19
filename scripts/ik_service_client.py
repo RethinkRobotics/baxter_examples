@@ -111,9 +111,9 @@ def ik_test(limb):
 def main():
     """RSDK Inverse Kinematics Example
 
-    A simple example of using the Rethink Simple IK Service
-    to get the joint angles for a Cartesian Pose or to just
-    check if a pose is valid/possible.
+    A simple example of using the Rethink Inverse Kinematics
+    Service which returns the joint angles and validity for
+    a requested Cartesian Pose.
 
     Run this example, passing the *limb* to test, and the
     example will call the Service with a sample Cartesian

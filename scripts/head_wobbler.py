@@ -93,7 +93,7 @@ class Wobbler(object):
 
 
 def main():
-    """RSDK Head Wobbler Example
+    """RSDK Head Example: Wobbler
 
     Nods the head and pans side-to-side towards random angles.
     Demonstrates the use of the baxter_interface.Head class.

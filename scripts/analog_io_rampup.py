@@ -62,7 +62,7 @@ def test_interface(io_component='torso_fan'):
 
 
 def main():
-    """RSDK Analog IO Ramp Example
+    """RSDK Analog IO Example: Ramp
 
     Ramps the output of an AnalogIO component from 0 to 100,
     and then back down again. Demonstrates the use of the

@@ -280,10 +280,10 @@ def main():
     """RSDK Joint Trajectory Example: File Playback
 
     Plays back joint positions honoring timestamps recorded
-    via joint_recorder example.
+    via the joint_recorder example.
 
     Run the joint_recorder.py example first to create a recording
-    filefor use with this example. Then make sure to start the
+    file for use with this example. Then make sure to start the
     joint_trajectory_action_server before running this example.
 
     This example will use the joint trajectory action server

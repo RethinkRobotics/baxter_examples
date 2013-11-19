@@ -130,7 +130,7 @@ class Wobbler(object):
 
 
 def main():
-    """RSDK Joint Velocity Wobbler Example
+    """RSDK Joint Velocity Example: Wobbler
 
     Commands joint velocities of randomly parameterized cosine waves
     to each joint. Demonstrates Joint Velocity Control Mode.

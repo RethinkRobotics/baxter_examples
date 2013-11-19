@@ -167,10 +167,11 @@ def main():
     torque control mode, attaching virtual springs (Hooke's Law)
     to each joint maintaining the start position.
 
-    Run this example on a specified limb and then push the arm
-    around to feel the virtual joint springs. You can adjust
-    the spring constant and damping coefficient for each joint
-    using dynamic_reconfigure.
+    Run this example on the specified limb and interact by
+    grabbing, pushing, and rotating each joint to feel the torques
+    applied that represent the virtual springs attached.
+    You can adjust the spring constant and damping coefficient
+    for each joint using dynamic_reconfigure.
     """
     arg_fmt = argparse.RawDescriptionHelpFormatter
     parser = argparse.ArgumentParser(formatter_class=arg_fmt,

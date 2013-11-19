@@ -57,13 +57,13 @@ def send_image(path):
 
 
 def main():
-    """RSDK Xdisplay Image File Example
+    """RSDK Xdisplay Example: Image Display
 
     Displays a given image file on Baxter's face.
 
     Pass the relative or absolute file path to an image file on your
-    computer, and the example will read and convert using cv_bridge,
-    then send it to the screen as a standard ROS Image Message.
+    computer, and the example will read and convert the image using
+    cv_bridge, sending it to the screen as a standard ROS Image Message.
     """
     epilog = """
 Notes:

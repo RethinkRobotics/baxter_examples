@@ -79,7 +79,7 @@ class GripperClient(object):
 
 
 def main():
-    """RSDK Gripper Action Client Example
+    """RSDK Gripper Example: Action Client
 
     Demonstrates creating a client of the Gripper Action Server,
     which enables sending commands of standard action type

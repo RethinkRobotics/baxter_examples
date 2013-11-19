@@ -92,7 +92,7 @@ class Trajectory(object):
 
 
 def main():
-    """RSDK Joint Trajectory Action Client Example
+    """RSDK Joint Trajectory Example: Simple Action Client
 
     Creates a client of the Joint Trajectory Action Server
     to send commands of standard action type,

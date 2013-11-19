@@ -170,8 +170,8 @@ def main():
     of each joint in Baxter's arms using the joysticks. Be sure to
     provide your *joystick* type to setup appropriate key mappings.
 
-    Each stick axis maps to a joint angle; which joints are
-    currently controlled can be incremented by using the buttons.
+    Each stick axis maps to a joint angle; which joints are currently
+    controlled can be incremented by using the mapped increment buttons.
     Ex:
       (x,y -> e0,e1) >>increment>> (x,y -> e1,e2)
     """
