@@ -268,12 +268,14 @@ class Trajectory(object):
 
         l_finish = self._left_client.wait_for_result(timeout)
         r_finish = self._right_client.wait_for_result(timeout)
-
+        l_result = (self._left_client.get_result().error_code == 0)
+        r_result = (self._right_client.get_result().error_code == 0)
         #verify result
-        if l_finish and r_finish:
+        if all([l_finish, r_finish, l_result, r_result]):
             return True
         else:
-            msg = "Trajectory action did not finish before timeout/interrupt."
+            msg = ("Trajectory action failed/or did not finish before "
+                   "timeout/interrupt.")
             rospy.logwarn(msg)
             return False
 
