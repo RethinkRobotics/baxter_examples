@@ -1,7 +1,7 @@
 baxter_examples
 ===============
 
-Example programs for Baxter Research Robot SDK usage
+Example SDK usage for the Baxter Research Robot from Rethink Robotics
 
 Code & Tickets
 --------------
