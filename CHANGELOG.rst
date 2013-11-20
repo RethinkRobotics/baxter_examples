@@ -1,6 +1,6 @@
 0.7.0 (2013-11-21)
 ---------------------------------
-- Creation of baxter_examples repository from sdk-examples/baxter_examples package.
+- Creation of baxter_examples repository from sdk-examples/examples.
 - Adds joint torque springs examples.
 - Adds gripper cuff control example.
 - Adds gripper action client example.
