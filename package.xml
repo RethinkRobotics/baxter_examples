@@ -12,10 +12,10 @@
   <license>BSD</license>
   <url type="website">http://www.rethinkrobotics.com/sdk</url>
   <url type="repository">
-    https://github.com/RethinkRobotics/sdk-examples
+    https://github.com/RethinkRobotics/baxter_examples
   </url>
   <url type="bugtracker">
-    https://github.com/RethinkRobotics/sdk-examples/issues
+    https://github.com/RethinkRobotics/baxter_examples/issues
   </url>
   <author>Rethink Robotics Inc.</author>
 
