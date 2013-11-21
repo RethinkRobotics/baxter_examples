@@ -27,6 +27,7 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
+import argparse
 import math
 import random
 
@@ -129,6 +130,16 @@ class Wobbler(object):
 
 
 def main():
+    """RSDK Joint Velocity Example: Wobbler
+
+    Commands joint velocities of randomly parameterized cosine waves
+    to each joint. Demonstrates Joint Velocity Control Mode.
+    """
+    arg_fmt = argparse.RawDescriptionHelpFormatter
+    parser = argparse.ArgumentParser(formatter_class=arg_fmt,
+                                     description=main.__doc__)
+    parser.parse_args(rospy.myargv()[1:])
+
     print("Initializing node... ")
     rospy.init_node("rsdk_joint_velocity_wobbler")
 

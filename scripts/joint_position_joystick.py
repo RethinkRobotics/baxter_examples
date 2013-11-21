@@ -35,14 +35,14 @@ import argparse
 import rospy
 
 import baxter_interface
-import baxter_io_devices
+import baxter_external_devices
 
 
 def rotate(l):
     """
-    @param l - the list
-
     Rotates a list left.
+
+    @param l: the list
     """
     if len(l):
         v = l[0]
@@ -52,13 +52,13 @@ def rotate(l):
 
 def set_j(cmd, limb, joints, index, delta):
     """
-    @param cmd - the joint command dictionary
-    @param limb - the limb to get the pos from
-    @param joints - a list of joint names
-    @param index - the index in the list of names
-    @param delta - delta to update the joint by
-
     Set the selected joint to current pos + delta.
+
+    @param cmd: the joint command dictionary
+    @param limb: the limb to get the pos from
+    @param joints: a list of joint names
+    @param index: the index in the list of names
+    @param delta: delta to update the joint by
 
     joint/index is to make this work in the bindings.
     """
@@ -68,9 +68,9 @@ def set_j(cmd, limb, joints, index, delta):
 
 def map_joystick(joystick):
     """
-    @param joystick - an instance of a Joystick
-
     Maps joystick input to joint position commands.
+
+    @param joystick: an instance of a Joystick
     """
     left = baxter_interface.Limb('left')
     right = baxter_interface.Limb('right')
@@ -160,7 +160,29 @@ def map_joystick(joystick):
 
 
 def main():
-    parser = argparse.ArgumentParser()
+    """RSDK Joint Position Example: Joystick Control
+
+    Use a game controller to control the angular joint positions
+    of Baxter's arms.
+
+    Attach a game controller to your dev machine and run this
+    example along with the ROS joy_node to control the position
+    of each joint in Baxter's arms using the joysticks. Be sure to
+    provide your *joystick* type to setup appropriate key mappings.
+
+    Each stick axis maps to a joint angle; which joints are currently
+    controlled can be incremented by using the mapped increment buttons.
+    Ex:
+      (x,y -> e0,e1) >>increment>> (x,y -> e1,e2)
+    """
+    epilog = """
+See help inside the example with the "Start" button for controller
+key bindings.
+    """
+    arg_fmt = argparse.RawDescriptionHelpFormatter
+    parser = argparse.ArgumentParser(formatter_class=arg_fmt,
+                                     description=main.__doc__,
+                                     epilog=epilog)
     required = parser.add_argument_group('required arguments')
     required.add_argument(
         '-j', '--joystick', required=True,
@@ -171,11 +193,11 @@ def main():
 
     joystick = None
     if args.joystick == 'xbox':
-        joystick = baxter_io_devices.joystick.XboxController()
+        joystick = baxter_external_devices.joystick.XboxController()
     elif args.joystick == 'logitech':
-        joystick = baxter_io_devices.joystick.LogitechController()
+        joystick = baxter_external_devices.joystick.LogitechController()
     elif args.joystick == 'ps3':
-        joystick = baxter_io_devices.joystick.PS3Controller()
+        joystick = baxter_external_devices.joystick.PS3Controller()
     else:
         parser.error("Unsupported joystick type '%s'" % (args.joystick))
 

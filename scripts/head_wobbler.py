@@ -27,6 +27,7 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
+import argparse
 import random
 
 import rospy
@@ -40,6 +41,7 @@ class Wobbler(object):
         """
         'Wobbles' the head
         """
+        self._done = False
         self._head = baxter_interface.Head()
 
         # verify robot is enabled
@@ -56,7 +58,8 @@ class Wobbler(object):
         maintaining start state
         """
         print("\nExiting example...")
-        self.set_neutral()
+        if self._done:
+            self.set_neutral()
         if not self._init_state and self._rs.state().enabled:
             print("Disabling robot...")
             self._rs.disable()
@@ -85,10 +88,21 @@ class Wobbler(object):
                 control_rate.sleep()
             command_rate.sleep()
 
+        self._done = True
         rospy.signal_shutdown("Example finished.")
 
 
 def main():
+    """RSDK Head Example: Wobbler
+
+    Nods the head and pans side-to-side towards random angles.
+    Demonstrates the use of the baxter_interface.Head class.
+    """
+    arg_fmt = argparse.RawDescriptionHelpFormatter
+    parser = argparse.ArgumentParser(formatter_class=arg_fmt,
+                                     description=main.__doc__)
+    parser.parse_args(rospy.myargv()[1:])
+
     print("Initializing node... ")
     rospy.init_node("rsdk_head_wobbler")
 
@@ -96,6 +110,7 @@ def main():
     rospy.on_shutdown(wobbler.clean_shutdown)
     print("Wobbling... ")
     wobbler.wobble()
+    print("Done.")
 
 if __name__ == '__main__':
     main()

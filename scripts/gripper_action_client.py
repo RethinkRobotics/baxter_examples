@@ -58,6 +58,7 @@ class GripperClient(object):
         if not self._client.wait_for_server(rospy.Duration(10.0)):
             rospy.logerr("Exiting - %s Gripper Action Server Not Found" %
                          (gripper.capitalize(),))
+            rospy.signal_shutdown("Action Server not found")
             sys.exit(1)
         self.clear()
 
@@ -69,8 +70,8 @@ class GripperClient(object):
     def stop(self):
         self._client.cancel_goal()
 
-    def wait(self):
-        self._client.wait_for_result()
+    def wait(self, timeout=5.0):
+        self._client.wait_for_result(timeout=rospy.Duration(timeout))
         return self._client.get_result()
 
     def clear(self):
@@ -78,7 +79,19 @@ class GripperClient(object):
 
 
 def main():
-    parser = argparse.ArgumentParser()
+    """RSDK Gripper Example: Action Client
+
+    Demonstrates creating a client of the Gripper Action Server,
+    which enables sending commands of standard action type
+    control_msgs/GripperCommand.
+
+    The example will command the grippers to a number of positions
+    while specifying moving force or vacuum sensor threshold. Be sure
+    to start Baxter's gripper_action_server before running this example.
+    """
+    arg_fmt = argparse.RawDescriptionHelpFormatter
+    parser = argparse.ArgumentParser(formatter_class=arg_fmt,
+                                     description=main.__doc__)
     parser.add_argument(
         '-g', '--gripper', dest='gripper', required=True,
         choices=['left', 'right'],

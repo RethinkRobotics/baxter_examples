@@ -28,8 +28,6 @@
 # POSSIBILITY OF SUCH DAMAGE.
 """
 Baxter RSDK Joint Trajectory Example: file playback
-Plays back joint positions honoring timestamps recorded
-Via joint_position example - joint_position recorder.py <filename>
 """
 
 import argparse
@@ -72,7 +70,7 @@ class Trajectory(object):
         r_server_up = self._right_client.wait_for_server(rospy.Duration(1.0))
         if not l_server_up or not r_server_up:
             msg = ("Action server not available."
-                   " Verify controller availability.")
+                   " Verify action server availability.")
             rospy.logerr(msg)
             rospy.signal_shutdown(msg)
             sys.exit(1)
@@ -105,7 +103,7 @@ class Trajectory(object):
         self._r_grip = FollowJointTrajectoryGoal()
 
         #param namespace
-        self._param_ns = '/rethink_rsdk_joint_trajectory_action_server/'
+        self._param_ns = '/rsdk_joint_trajectory_action_server/'
 
         #gripper control rate
         self._gripper_rate = 20.0  # Hz
@@ -130,13 +128,13 @@ class Trajectory(object):
 
     def _clean_line(self, line, joint_names):
         """
-        @param line - the line described in a list to process
-        @param joint_names - joint name keys
-
-        @return command - returns dictionary {joint: value} of valid commands
-        @return line - returns list of current line values stripped of commas
-
         Cleans a single line of recorded joint positions
+
+        @param line: the line described in a list to process
+        @param joint_names: joint name keys
+
+        @return command: returns dictionary {joint: value} of valid commands
+        @return line: returns list of current line values stripped of commas
         """
         def try_float(x):
             try:
@@ -155,11 +153,11 @@ class Trajectory(object):
 
     def _add_point(self, positions, side, time):
         """
-        @param positions - joint positions
-        @param side - limb to command point
-        @param time - time from start for point in seconds
-
         Appends trajectory with new point
+
+        @param positions: joint positions
+        @param side: limb to command point
+        @param time: time from start for point in seconds
         """
         #creates a point in trajectory with time_from_start and positions
         point = JointTrajectoryPoint()
@@ -176,9 +174,9 @@ class Trajectory(object):
 
     def parse_file(self, filename):
         """
-        @param filename - input filename
-
         Parses input file into FollowJointTrajectoryGoal format
+
+        @param filename: input filename
         """
         #open recorded file
         with open(filename, 'r') as f:
@@ -268,18 +266,42 @@ class Trajectory(object):
 
         l_finish = self._left_client.wait_for_result(timeout)
         r_finish = self._right_client.wait_for_result(timeout)
+        l_result = (self._left_client.get_result().error_code == 0)
+        r_result = (self._right_client.get_result().error_code == 0)
 
         #verify result
-        if l_finish and r_finish:
+        if all([l_finish, r_finish, l_result, r_result]):
             return True
         else:
-            msg = "Trajectory action did not finish before timeout/interrupt."
+            msg = ("Trajectory action failed or did not finish before "
+                   "timeout/interrupt.")
             rospy.logwarn(msg)
             return False
 
 
 def main():
-    parser = argparse.ArgumentParser()
+    """RSDK Joint Trajectory Example: File Playback
+
+    Plays back joint positions honoring timestamps recorded
+    via the joint_recorder example.
+
+    Run the joint_recorder.py example first to create a recording
+    file for use with this example. Then make sure to start the
+    joint_trajectory_action_server before running this example.
+
+    This example will use the joint trajectory action server
+    with velocity control to follow the positions and times of
+    the recorded motion, accurately replicating movement speed
+    necessary to hit each trajectory point on time.
+    """
+    epilog = """
+Related examples:
+  joint_recorder.py; joint_position_file_playback.py.
+    """
+    arg_fmt = argparse.RawDescriptionHelpFormatter
+    parser = argparse.ArgumentParser(formatter_class=arg_fmt,
+                                     description=main.__doc__,
+                                     epilog=epilog)
     parser.add_argument(
         '-f', '--file', metavar='PATH', required=True,
         help='path to input file'

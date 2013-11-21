@@ -28,9 +28,6 @@
 # POSSIBILITY OF SUCH DAMAGE.
 """
 Baxter RSDK Joint Torque Example: joint springs
-Moves the specified limb to a neutral location and enters torque control mode
-Attaching virtual springs (Hooke's law) to each joint maintaining the start
-position
 """
 
 import argparse
@@ -53,8 +50,10 @@ from baxter_examples.cfg import (
 
 class JointSprings(object):
     """
-    @param limb - limb on which to run joint springs example
-    @param reconfig_server - dynamic reconfigure server
+    Virtual Joint Springs class for torque example.
+
+    @param limb: limb on which to run joint springs example
+    @param reconfig_server: dynamic reconfigure server
 
     JointSprings class contains methods for the joint torque example allowing
     moving the limb to a neutral location, entering torque mode, and attaching
@@ -113,7 +112,7 @@ class JointSprings(object):
         cur_vel = self._limb.joint_velocities()
         # calculate current forces
         for joint in self._start_angles.keys():
-            # spring portion 
+            # spring portion
             cmd[joint] = self._springs[joint] * (self._start_angles[joint] -
                                                    cur_pos[joint])
             # damping portion
@@ -164,7 +163,21 @@ class JointSprings(object):
 
 
 def main():
-    parser = argparse.ArgumentParser()
+    """RSDK Joint Torque Example: Joint Springs
+
+    Moves the specified limb to a neutral location and enters
+    torque control mode, attaching virtual springs (Hooke's Law)
+    to each joint maintaining the start position.
+
+    Run this example on the specified limb and interact by
+    grabbing, pushing, and rotating each joint to feel the torques
+    applied that represent the virtual springs attached.
+    You can adjust the spring constant and damping coefficient
+    for each joint using dynamic_reconfigure.
+    """
+    arg_fmt = argparse.RawDescriptionHelpFormatter
+    parser = argparse.ArgumentParser(formatter_class=arg_fmt,
+                                     description=main.__doc__)
     parser.add_argument(
         '-l', '--limb', dest='limb', required=True, choices=['left', 'right'],
         help='limb on which to attach joint springs'

@@ -83,7 +83,23 @@ def echo_input():
 
 
 def main():
-    parser = argparse.ArgumentParser()
+    """RSDK Navigator Input/Output Example
+
+    Demonstrates Navigator output by blinking the lights, or
+    Navigator input by echoing input values from wheels and
+    buttons.
+
+    Run this example, selecting either the input or output action
+    with the corresponding arguments, then follow the instructions
+    on screen.
+
+    Uses the baxter_interface.Navigator class to interface with the
+    four Navigator button/LED controls. Also shows a nice example of
+    using the button_changed Signal feature.
+    """
+    arg_fmt = argparse.RawDescriptionHelpFormatter
+    parser = argparse.ArgumentParser(formatter_class=arg_fmt,
+                                     description=main.__doc__)
     action_grp = parser.add_mutually_exclusive_group(required=True)
     action_grp.add_argument(
         '-b', '--blink', dest='action', action='store_const', const=blink,

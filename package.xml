@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>baxter_examples</name>
-  <version>0.6.1</version>
+  <version>0.7.0</version>
   <description>
     Example programs for Baxter SDK usage.
   </description>
@@ -10,12 +10,12 @@
     Rethink Robotics Inc.
   </maintainer>
   <license>BSD</license>
-  <url type="website">http://www.rethinkrobotics.com</url>
+  <url type="website">http://www.rethinkrobotics.com/sdk</url>
   <url type="repository">
-    https://github.com/RethinkRobotics/sdk-examples
+    https://github.com/RethinkRobotics/baxter_examples
   </url>
   <url type="bugtracker">
-    https://github.com/RethinkRobotics/sdk-examples/issues
+    https://github.com/RethinkRobotics/baxter_examples/issues
   </url>
   <author>Rethink Robotics Inc.</author>
 

@@ -28,10 +28,11 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 """
-Baxter RSDK Joint Trajectory Controller Test
+Baxter RSDK Joint Trajectory Action Client Example
 """
-from copy import copy
 import argparse
+from copy import copy
+import sys
 
 import rospy
 
@@ -56,7 +57,13 @@ class Trajectory(object):
             FollowJointTrajectoryAction,
         )
         self._goal = FollowJointTrajectoryGoal()
-        self._client.wait_for_server()
+        server_up = self._client.wait_for_server(timeout=rospy.Duration(10.0))
+        if not server_up:
+            rospy.logerr("Timed out waiting for Joint Trajectory"
+                         " Action Server to connect. Start the action server"
+                         " before running example.")
+            rospy.signal_shutdown("Timed out waiting for Action Server")
+            sys.exit(1)
         self.clear(limb)
 
     def add_point(self, positions, time):
@@ -72,8 +79,8 @@ class Trajectory(object):
     def stop(self):
         self._client.cancel_goal()
 
-    def wait(self):
-        self._client.wait_for_result()
+    def wait(self, timeout=15.0):
+        self._client.wait_for_result(timeout=rospy.Duration(timeout))
 
     def result(self):
         return self._client.get_result()
@@ -85,7 +92,20 @@ class Trajectory(object):
 
 
 def main():
-    parser = argparse.ArgumentParser()
+    """RSDK Joint Trajectory Example: Simple Action Client
+
+    Creates a client of the Joint Trajectory Action Server
+    to send commands of standard action type,
+    control_msgs/FollowJointTrajectoryAction.
+
+    Make sure to start the joint_trajectory_action_server.py
+    first. Then run this example on a specified limb to
+    command a short series of trajectory points for the arm
+    to follow.
+    """
+    arg_fmt = argparse.RawDescriptionHelpFormatter
+    parser = argparse.ArgumentParser(formatter_class=arg_fmt,
+                                     description=main.__doc__)
     required = parser.add_argument_group('required arguments')
     required.add_argument(
         '-l', '--limb', required=True, choices=['left', 'right'],
@@ -114,7 +134,7 @@ def main():
     traj.add_point([x * 0.75 for x in p1], 9.0)
     traj.add_point([x * 1.25 for x in p1], 12.0)
     traj.start()
-    traj.wait()
+    traj.wait(15.0)
     print("Exiting - Joint Trajectory Action Test Complete")
 
 if __name__ == "__main__":

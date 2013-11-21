@@ -27,7 +27,6 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-
 import os
 import sys
 import argparse
@@ -47,7 +46,7 @@ def send_image(path):
     Send the image located at the specified path to the head
     display on Baxter.
 
-    @param path - path to the image file to load and send
+    @param path: path to the image file to load and send
     """
     img = cv.LoadImage(path)
     msg = cv_bridge.CvBridge().cv_to_imgmsg(img, encoding="bgr8")
@@ -58,7 +57,24 @@ def send_image(path):
 
 
 def main():
-    parser = argparse.ArgumentParser()
+    """RSDK Xdisplay Example: Image Display
+
+    Displays a given image file on Baxter's face.
+
+    Pass the relative or absolute file path to an image file on your
+    computer, and the example will read and convert the image using
+    cv_bridge, sending it to the screen as a standard ROS Image Message.
+    """
+    epilog = """
+Notes:
+    Max screen resolution is 1024x600.
+    Images are always aligned to the top-left corner.
+    Image formats are those supported by OpenCv - LoadImage().
+    """
+    arg_fmt = argparse.RawDescriptionHelpFormatter
+    parser = argparse.ArgumentParser(formatter_class=arg_fmt,
+                                     description=main.__doc__,
+                                     epilog=epilog)
     required = parser.add_argument_group('required arguments')
     required.add_argument(
         '-f', '--file', metavar='PATH', required=True,

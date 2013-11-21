@@ -30,10 +30,12 @@
 """
 Baxter RSDK Joint Position Example: keyboard
 """
+import argparse
+
 import rospy
 
 import baxter_interface
-import baxter_io_devices
+import baxter_external_devices
 
 
 def map_keyboard():
@@ -90,7 +92,7 @@ def map_keyboard():
     done = False
     print("Controlling joints. Press ? for help, Esc to quit.")
     while not done and not rospy.is_shutdown():
-        c = baxter_io_devices.getch()
+        c = baxter_external_devices.getch()
         if c:
             #catch Esc or ctrl-c
             if c in ['\x1b', '\x03']:
@@ -111,6 +113,24 @@ def map_keyboard():
 
 
 def main():
+    """RSDK Joint Position Example: Keyboard Control
+
+    Use your dev machine's keyboard to control joint positions.
+
+    Each key corresponds to increasing or decreasing the angle
+    of a joint on one of Baxter's arms. Each arm is represented
+    by one side of the keyboard and inner/outer key pairings
+    on each row for each joint.
+    """
+    epilog = """
+See help inside the example with the '?' key for key bindings.
+    """
+    arg_fmt = argparse.RawDescriptionHelpFormatter
+    parser = argparse.ArgumentParser(formatter_class=arg_fmt,
+                                     description=main.__doc__,
+                                     epilog=epilog)
+    parser.parse_args(rospy.myargv()[1:])
+
     print("Initializing node... ")
     rospy.init_node("rsdk_joint_position_keyboard")
     print("Getting robot state... ")
