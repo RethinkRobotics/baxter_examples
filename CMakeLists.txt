@@ -3,6 +3,7 @@ project(baxter_examples)
 
 find_package(catkin
   REQUIRED
+  COMPONENTS
   rospy
   actionlib
   sensor_msgs
