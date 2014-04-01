@@ -74,6 +74,8 @@ class GripperConnect(object):
                    (self._gripper.name.capitalize(), self._gripper.type()))
             rospy.logwarn(msg)
 
+        self._gripper.type_changed.connect(self.check_calibration)
+
         if lights:
             self._light_io.state_changed.connect(self._light_action)
 
@@ -98,6 +100,15 @@ class GripperConnect(object):
         self._nav.inner_led = value
         self._nav.outer_led = value
 
+    def check_calibration(self):
+        if self._gripper.calibrated():
+            return True
+        elif self._gripper.type() == 'electric':
+            rospy.loginfo("GripperCuffEx: calibrating %s...",
+                          self._gripper.name.capitalize())
+            return (self._gripper.calibrate() == True)
+        else:
+            return False
 
 def main():
     """RSDK Gripper Button Control Example
