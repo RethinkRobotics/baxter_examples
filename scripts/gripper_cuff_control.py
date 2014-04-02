@@ -74,7 +74,7 @@ class GripperConnect(object):
                    (self._gripper.name.capitalize(), self._gripper.type()))
             rospy.logwarn(msg)
 
-        self._gripper.type_changed.connect(self.check_calibration)
+        self._gripper.on_type_changed.connect(self.check_calibration)
 
         if lights:
             self._light_io.state_changed.connect(self._light_action)
@@ -100,10 +100,11 @@ class GripperConnect(object):
         self._nav.inner_led = value
         self._nav.outer_led = value
 
-    def check_calibration(self):
+    def check_calibration(self, value):
+        print value
         if self._gripper.calibrated():
             return True
-        elif self._gripper.type() == 'electric':
+        elif value == 'electric':
             rospy.loginfo("GripperCuffEx: calibrating %s...",
                           self._gripper.name.capitalize())
             return (self._gripper.calibrate() == True)
