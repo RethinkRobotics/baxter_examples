@@ -104,7 +104,7 @@ class GripperConnect(object):
         if self._gripper.calibrated():
             return True
         elif value == 'electric':
-            rospy.loginfo("GripperCuffEx: calibrating %s...",
+            rospy.loginfo("calibrating %s...",
                           self._gripper.name.capitalize())
             return (self._gripper.calibrate() == True)
         else:
