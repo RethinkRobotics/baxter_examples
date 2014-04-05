@@ -64,7 +64,7 @@ def echo_input():
         print ("Button 2: %s" % (v,))
 
     def wheel_moved(v):
-        print ("Wheel Increment: %d, New Value: %s" % (v,nav.wheel))
+        print ("Wheel Increment: %d, New Value: %s" % (v, nav.wheel))
 
     nav = baxter_interface.Navigator('left')
     nav.button0_changed.connect(b0_pressed)
