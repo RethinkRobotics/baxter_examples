@@ -44,6 +44,8 @@ from control_msgs.msg import (
 
 import baxter_interface
 
+from baxter_interface import CHECK_VERSION
+
 
 class GripperClient(object):
     def __init__(self, gripper):
@@ -103,7 +105,7 @@ def main():
     print("Initializing node... ")
     rospy.init_node("rsdk_gripper_action_client_%s" % (gripper,))
     print("Getting robot state... ")
-    rs = baxter_interface.RobotEnable()
+    rs = baxter_interface.RobotEnable(CHECK_VERSION)
     print("Enabling robot... ")
     rs.enable()
     print("Running. Ctrl-c to quit")

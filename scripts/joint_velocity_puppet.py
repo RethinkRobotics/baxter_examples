@@ -38,6 +38,8 @@ from std_msgs.msg import (
 
 import baxter_interface
 
+from baxter_interface import CHECK_VERSION
+
 
 class Puppeteer(object):
 
@@ -56,7 +58,7 @@ class Puppeteer(object):
         self._amp = amplification
 
         print("Getting robot state... ")
-        self._rs = baxter_interface.RobotEnable()
+        self._rs = baxter_interface.RobotEnable(CHECK_VERSION)
         self._init_state = self._rs.state().enabled
         print("Enabling robot... ")
         self._rs.enable()

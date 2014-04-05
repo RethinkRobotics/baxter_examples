@@ -46,6 +46,7 @@ import baxter_interface
 from baxter_examples.cfg import (
     JointSpringsExampleConfig,
 )
+from baxter_interface import CHECK_VERSION
 
 
 class JointSprings(object):
@@ -80,7 +81,7 @@ class JointSprings(object):
 
         # verify robot is enabled
         print("Getting robot state... ")
-        self._rs = baxter_interface.RobotEnable()
+        self._rs = baxter_interface.RobotEnable(CHECK_VERSION)
         self._init_state = self._rs.state().enabled
         print("Enabling robot... ")
         self._rs.enable()

@@ -37,14 +37,16 @@ import rospy
 import baxter_interface
 import baxter_external_devices
 
+from baxter_interface import CHECK_VERSION
+
 
 def map_keyboard():
     # initialize interfaces
     print("Getting robot state... ")
-    rs = baxter_interface.RobotEnable()
+    rs = baxter_interface.RobotEnable(CHECK_VERSION)
     init_state = rs.state().enabled
-    left = baxter_interface.Gripper('left')
-    right = baxter_interface.Gripper('right')
+    left = baxter_interface.Gripper('left', CHECK_VERSION)
+    right = baxter_interface.Gripper('right', CHECK_VERSION)
 
     def clean_shutdown():
         if not init_state:

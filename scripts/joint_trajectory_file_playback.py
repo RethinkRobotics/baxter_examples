@@ -52,6 +52,8 @@ from trajectory_msgs.msg import (
 
 import baxter_interface
 
+from baxter_interface import CHECK_VERSION
+
 
 class Trajectory(object):
     def __init__(self):
@@ -83,8 +85,8 @@ class Trajectory(object):
         self._r_arm = baxter_interface.Limb('right')
 
         #gripper interface - for gripper command playback
-        self._l_gripper = baxter_interface.Gripper('left')
-        self._r_gripper = baxter_interface.Gripper('right')
+        self._l_gripper = baxter_interface.Gripper('left', CHECK_VERSION)
+        self._r_gripper = baxter_interface.Gripper('right', CHECK_VERSION)
 
         # Verify Grippers Have No Errors and are Calibrated
         if self._l_gripper.error():
@@ -316,7 +318,7 @@ Related examples:
     print("Initializing node... ")
     rospy.init_node("rsdk_joint_trajectory_file_playback")
     print("Getting robot state... ")
-    rs = baxter_interface.RobotEnable()
+    rs = baxter_interface.RobotEnable(CHECK_VERSION)
     print("Enabling robot... ")
     rs.enable()
     print("Running. Ctrl-c to quit")
