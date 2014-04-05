@@ -66,13 +66,15 @@ class GripperConnect(object):
         # connect callback fns to signals
         if self._gripper.type() != 'custom':
             self._gripper.calibrate()
-            self._open_io.state_changed.connect(self._open_action)
-            self._close_io.state_changed.connect(self._close_action)
         else:
             msg = (("%s (%s) not capable of gripper commands."
                    " Running cuff-light connection only.") %
                    (self._gripper.name.capitalize(), self._gripper.type()))
             rospy.logwarn(msg)
+
+        self._gripper.on_type_changed.connect(self._check_calibration)
+        self._open_io.state_changed.connect(self._open_action)
+        self._close_io.state_changed.connect(self._close_action)
 
         if lights:
             self._light_io.state_changed.connect(self._light_action)
@@ -81,12 +83,12 @@ class GripperConnect(object):
                       self._gripper.name.capitalize())
 
     def _open_action(self, value):
-        if value:
+        if value and self._is_grippable():
             rospy.logdebug("gripper open triggered")
             self._gripper.open()
 
     def _close_action(self, value):
-        if value:
+        if value and self._is_grippable():
             rospy.logdebug("gripper close triggered")
             self._gripper.close()
 
@@ -97,6 +99,19 @@ class GripperConnect(object):
             rospy.logdebug("cuff release triggered")
         self._nav.inner_led = value
         self._nav.outer_led = value
+
+    def _check_calibration(self, value):
+        if self._gripper.calibrated():
+            return True
+        elif value == 'electric':
+            rospy.loginfo("calibrating %s...",
+                          self._gripper.name.capitalize())
+            return (self._gripper.calibrate() == True)
+        else:
+            return False
+
+    def _is_grippable(self):
+        return (self._gripper.calibrated() and self._gripper.ready())
 
 
 def main():
