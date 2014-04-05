@@ -84,8 +84,8 @@ def map_file(filename, loops=1):
     """
     left = baxter_interface.Limb('left')
     right = baxter_interface.Limb('right')
-    grip_left = baxter_interface.Gripper('left')
-    grip_right = baxter_interface.Gripper('right')
+    grip_left = baxter_interface.Gripper('left', CHECK_VERSION)
+    grip_right = baxter_interface.Gripper('right', CHECK_VERSION)
     rate = rospy.Rate(1000)
 
     if grip_left.error():

@@ -75,8 +75,8 @@ def map_joystick(joystick):
     """
     left = baxter_interface.Limb('left')
     right = baxter_interface.Limb('right')
-    grip_left = baxter_interface.Gripper('left')
-    grip_right = baxter_interface.Gripper('right')
+    grip_left = baxter_interface.Gripper('left', CHECK_VERSION)
+    grip_right = baxter_interface.Gripper('right', CHECK_VERSION)
     lcmd = {}
     rcmd = {}
 

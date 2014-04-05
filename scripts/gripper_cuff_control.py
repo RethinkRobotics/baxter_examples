@@ -36,6 +36,7 @@ from baxter_interface import (
     DigitalIO,
     Gripper,
     Navigator,
+    CHECK_VERSION,
 )
 
 
@@ -60,7 +61,7 @@ class GripperConnect(object):
         self._open_io = DigitalIO('%s_lower_button' % (arm,))   # 'circle' btn
         self._light_io = DigitalIO('%s_lower_cuff' % (arm,))    # cuff squeeze
         # outputs
-        self._gripper = Gripper('%s' % (arm,))
+        self._gripper = Gripper('%s' % (arm,), CHECK_VERSION)
         self._nav = Navigator('%s' % (arm,))
 
         # connect callback fns to signals

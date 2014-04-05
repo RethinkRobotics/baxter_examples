@@ -43,8 +43,8 @@ class JointRecorder(object):
 
         self._limb_left = baxter_interface.Limb("left")
         self._limb_right = baxter_interface.Limb("right")
-        self._gripper_left = baxter_interface.Gripper("left")
-        self._gripper_right = baxter_interface.Gripper("right")
+        self._gripper_left = baxter_interface.Gripper("left", CHECK_VERSION)
+        self._gripper_right = baxter_interface.Gripper("right", CHECK_VERSION)
         self._io_left_lower = baxter_interface.DigitalIO('left_lower_button')
         self._io_left_upper = baxter_interface.DigitalIO('left_upper_button')
         self._io_right_lower = baxter_interface.DigitalIO('right_lower_button')

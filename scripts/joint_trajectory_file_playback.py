@@ -84,8 +84,8 @@ class Trajectory(object):
         self._r_arm = baxter_interface.Limb('right')
 
         #gripper interface - for gripper command playback
-        self._l_gripper = baxter_interface.Gripper('left')
-        self._r_gripper = baxter_interface.Gripper('right')
+        self._l_gripper = baxter_interface.Gripper('left', CHECK_VERSION)
+        self._r_gripper = baxter_interface.Gripper('right', CHECK_VERSION)
 
         # Verify Grippers Have No Errors and are Calibrated
         if self._l_gripper.error():
