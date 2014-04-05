@@ -32,8 +32,9 @@ import random
 
 import rospy
 
-from baxter_interface import CHECK_VERSION
 import baxter_interface
+
+from baxter_interface import CHECK_VERSION
 
 
 class Wobbler(object):

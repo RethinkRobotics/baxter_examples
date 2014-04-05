@@ -50,8 +50,9 @@ from trajectory_msgs.msg import (
     JointTrajectoryPoint,
 )
 
-from baxter_interface import CHECK_VERSION
 import baxter_interface
+
+from baxter_interface import CHECK_VERSION
 
 
 class Trajectory(object):

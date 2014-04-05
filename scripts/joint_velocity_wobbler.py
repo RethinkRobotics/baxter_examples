@@ -37,8 +37,9 @@ from std_msgs.msg import (
     UInt16,
 )
 
-from baxter_interface import CHECK_VERSION
 import baxter_interface
+
+from baxter_interface import CHECK_VERSION
 
 
 class Wobbler(object):

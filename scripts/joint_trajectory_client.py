@@ -31,15 +31,13 @@
 Baxter RSDK Joint Trajectory Action Client Example
 """
 import argparse
-from copy import copy
 import sys
+
+from copy import copy
 
 import rospy
 
 import actionlib
-
-from baxter_interface import CHECK_VERSION
-import baxter_interface
 
 from control_msgs.msg import (
     FollowJointTrajectoryAction,
@@ -48,6 +46,10 @@ from control_msgs.msg import (
 from trajectory_msgs.msg import (
     JointTrajectoryPoint,
 )
+
+import baxter_interface
+
+from baxter_interface import CHECK_VERSION
 
 
 class Trajectory(object):

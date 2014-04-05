@@ -29,6 +29,8 @@ import rospy
 
 import baxter_interface
 
+from baxter_interface import CHECK_VERSION
+
 
 class JointRecorder(object):
     def __init__(self, filename, rate):

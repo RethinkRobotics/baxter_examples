@@ -31,9 +31,10 @@ import argparse
 
 import rospy
 
-from baxter_interface import CHECK_VERSION
 import baxter_interface
 from baxter_examples import JointRecorder
+
+from baxter_interface import CHECK_VERSION
 
 
 def main():

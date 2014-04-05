@@ -41,12 +41,12 @@ from std_msgs.msg import (
     Empty,
 )
 
-from baxter_interface import CHECK_VERSION
 import baxter_interface
 
 from baxter_examples.cfg import (
     JointSpringsExampleConfig,
 )
+from baxter_interface import CHECK_VERSION
 
 
 class JointSprings(object):

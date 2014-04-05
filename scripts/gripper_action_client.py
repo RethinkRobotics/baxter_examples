@@ -42,8 +42,9 @@ from control_msgs.msg import (
     GripperCommandGoal,
 )
 
-from baxter_interface import CHECK_VERSION
 import baxter_interface
+
+from baxter_interface import CHECK_VERSION
 
 
 class GripperClient(object):

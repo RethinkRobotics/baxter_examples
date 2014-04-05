@@ -34,9 +34,10 @@ import argparse
 
 import rospy
 
-from baxter_interface import CHECK_VERSION
 import baxter_interface
 import baxter_external_devices
+
+from baxter_interface import CHECK_VERSION
 
 
 def map_keyboard():
