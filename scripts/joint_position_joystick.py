@@ -34,6 +34,7 @@ import argparse
 
 import rospy
 
+from baxter_interface import CHECK_VERSION
 import baxter_interface
 import baxter_external_devices
 
@@ -204,7 +205,7 @@ key bindings.
     print("Initializing node... ")
     rospy.init_node("rsdk_joint_position_joystick")
     print("Getting robot state... ")
-    rs = baxter_interface.RobotEnable()
+    rs = baxter_interface.RobotEnable(CHECK_VERSION)
     init_state = rs.state().enabled
 
     def clean_shutdown():

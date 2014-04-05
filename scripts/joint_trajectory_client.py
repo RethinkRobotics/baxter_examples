@@ -38,6 +38,7 @@ import rospy
 
 import actionlib
 
+from baxter_interface import CHECK_VERSION
 import baxter_interface
 
 from control_msgs.msg import (
@@ -117,7 +118,7 @@ def main():
     print("Initializing node... ")
     rospy.init_node("rsdk_joint_trajectory_client_%s" % (limb,))
     print("Getting robot state... ")
-    rs = baxter_interface.RobotEnable()
+    rs = baxter_interface.RobotEnable(CHECK_VERSION)
     print("Enabling robot... ")
     rs.enable()
     print("Running. Ctrl-c to quit")

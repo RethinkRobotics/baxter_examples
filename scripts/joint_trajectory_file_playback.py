@@ -50,6 +50,7 @@ from trajectory_msgs.msg import (
     JointTrajectoryPoint,
 )
 
+from baxter_interface import CHECK_VERSION
 import baxter_interface
 
 
@@ -316,7 +317,7 @@ Related examples:
     print("Initializing node... ")
     rospy.init_node("rsdk_joint_trajectory_file_playback")
     print("Getting robot state... ")
-    rs = baxter_interface.RobotEnable()
+    rs = baxter_interface.RobotEnable(CHECK_VERSION)
     print("Enabling robot... ")
     rs.enable()
     print("Running. Ctrl-c to quit")

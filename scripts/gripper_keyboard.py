@@ -34,6 +34,7 @@ import argparse
 
 import rospy
 
+from baxter_interface import CHECK_VERSION
 import baxter_interface
 import baxter_external_devices
 
@@ -41,7 +42,7 @@ import baxter_external_devices
 def map_keyboard():
     # initialize interfaces
     print("Getting robot state... ")
-    rs = baxter_interface.RobotEnable()
+    rs = baxter_interface.RobotEnable(CHECK_VERSION)
     init_state = rs.state().enabled
     left = baxter_interface.Gripper('left')
     right = baxter_interface.Gripper('right')

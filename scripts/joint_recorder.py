@@ -31,6 +31,7 @@ import argparse
 
 import rospy
 
+from baxter_interface import CHECK_VERSION
 import baxter_interface
 from baxter_examples import JointRecorder
 
@@ -73,7 +74,7 @@ Related examples:
     print("Initializing node... ")
     rospy.init_node("rsdk_joint_recorder")
     print("Getting robot state... ")
-    rs = baxter_interface.RobotEnable()
+    rs = baxter_interface.RobotEnable(CHECK_VERSION)
     print("Enabling robot... ")
     rs.enable()
 
