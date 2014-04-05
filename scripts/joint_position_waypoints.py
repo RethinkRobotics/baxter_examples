@@ -52,7 +52,7 @@ class Waypoints(object):
         self._waypoints = list()
 
         # Recording state
-        self._done_recording = False
+        self._is_recording = False
 
         # Verify robot is enabled
         print("Getting robot state... ")
@@ -64,40 +64,61 @@ class Waypoints(object):
         # Create Navigator I/O
         self._navigator_io = baxter_interface.Navigator(self._arm)
 
+    def _record_waypoint(self, value):
+        """
+        Stores joint position waypoints
+
+        Navigator 'OK/Wheel' button callback
+        """
+        if value:
+            print("Waypoint Recorded")
+            self._waypoints.append(self._limb.joint_angles())
+
+    def _stop_recording(self, value):
+        """
+        Sets is_recording to false
+
+        Navigator 'Rethink' button callback
+        """
+        # On navigator Rethink button press, stop recording
+        if value:
+            self._is_recording = False
+
+    def record(self):
+        """
+        Records joint position waypoints upon each Navigator 'OK/Wheel' button
+        press.
+        """
+        rospy.loginfo("Waypoint Recording Started")
+        print("Press Navigator 'OK/Wheel' button to record a new joint "
+        "joint position waypoint.")
+        print("Press Navigator 'Rethink' button when finished recording "
+              "waypoints to begin playback")
         # Connect Navigator I/O signals
         # Navigator scroll wheel button press
         self._navigator_io.button0_changed.connect(self._record_waypoint)
         # Navigator Rethink button press
         self._navigator_io.button2_changed.connect(self._stop_recording)
 
-    def _record_waypoint(self, value):
-        # On navigator scroll wheel button press, record waypoint
-        if value:
-            print("Waypoint Recorded")
-            self._waypoints.append(self._limb.joint_angles())
+        # Set recording flag
+        self._is_recording = True
 
-    def _stop_recording(self, value):
-        # On navigator Rethink button press,stop recording
-        if value:
-            self._done_recording = True
-
-    def record_waypoints(self):
-        # Loop until waypoints are done being recorded (Cuff 'Dash' Btn Press)
-        while not self._done_recording and not rospy.is_shutdown():
+        # Loop until waypoints are done being recorded ('Rethink' Button Press)
+        while self._is_recording and not rospy.is_shutdown():
             rospy.sleep(1.0)
 
         # We are now done with the navigator I/O signals, disconnecting them
         self._navigator_io.button0_changed.disconnect(self._record_waypoint)
         self._navigator_io.button2_changed.disconnect(self._stop_recording)
 
-        # Begin playback
-        self._playback_waypoints()
-
-    def _playback_waypoints(self):
-        # Loops playback of waypoints until program is exited
+    def playback(self):
+        """
+        Loops playback of recorded joint position waypoints until program is
+        exited
+        """
         rospy.sleep(1.0)
 
-        print("Done Recording Waypoints - Beginning Playback")
+        rospy.loginfo("Waypoint Playback Started")
         print("  Press Ctrl-C to stop...")
 
         # Set joint position speed ratio for execution
@@ -113,8 +134,8 @@ class Waypoints(object):
                     break
                 self._limb.move_to_joint_positions(waypoint, timeout=20.0,
                                                    threshold=self._accuracy)
-        # Sleep for a few seconds between playback loops
-        rospy.sleep(3.0)
+            # Sleep for a few seconds between playback loops
+            rospy.sleep(3.0)
 
         # Set joint position speed back to default
         self._limb.set_joint_position_speed(0.3)
@@ -130,11 +151,10 @@ class Waypoints(object):
 def main():
     """RSDK Joint Position Waypoints Example
 
-    Records joint positions when the
-    navigator scroll wheel button is pressed.
-    Upon pressing the navigator Rethink button,
-    the recorded joint positions will begin
-    playing back in a loop.
+    Records joint positions each time the navigator 'OK/wheel'
+    button is pressed.
+    Upon pressing the navigator 'Rethink' button, the recorded joint positions
+    will begin playing back in a loop.
     """
     arg_fmt = argparse.RawDescriptionHelpFormatter
     parser = argparse.ArgumentParser(formatter_class=arg_fmt,
@@ -146,7 +166,7 @@ def main():
     )
     parser.add_argument(
         '-s', '--speed', default=0.3, type=float,
-        help='joint position move speed ratio [0.0-1.0]'
+        help='joint position motion speed ratio [0.0-1.0] (default:= 0.3)'
     )
     parser.add_argument(
         '-a', '--accuracy',
@@ -164,7 +184,8 @@ def main():
     rospy.on_shutdown(waypoints.clean_shutdown)
 
     # Begin example program
-    waypoints.record_waypoints()
+    waypoints.record()
+    waypoints.playback()
 
 if __name__ == '__main__':
     main()
