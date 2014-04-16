@@ -66,8 +66,8 @@ class GripperConnect(object):
 
         # connect callback fns to signals
         if self._gripper.type() != 'custom':
-            self._gripper.calibrate()
-            if not self._gripper.calibrated():
+            if not (self._gripper.calibrated() or
+                    self._gripper.calibrate() == True):
                 rospy.logwarn("%s (%s) calibration failed.",
                               self._gripper.name.capitalize(),
                               self._gripper.type())
