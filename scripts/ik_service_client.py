@@ -31,6 +31,7 @@
 Baxter RSDK Inverse Kinematics Example
 """
 import argparse
+import struct
 import sys
 
 import rospy
@@ -97,11 +98,24 @@ def ik_test(limb):
     except (rospy.ServiceException, rospy.ROSException), e:
         rospy.logerr("Service call failed: %s" % (e,))
         return 1
-    if (resp.isValid[0]):
-        print("SUCCESS - Valid Joint Solution Found:")
+
+    # Check if result valid, and type of seed ultimately used to get solution
+    # convert rospy's string representation of uint8[]'s to int's
+    resp_seeds = struct.unpack('<%dB' % len(resp.result_type),
+                               resp.result_type)
+    if (resp_seeds[0] != resp.RESULT_INVALID):
+        seed_str = {
+                    ikreq.SEED_USER: 'User Provided Seed',
+                    ikreq.SEED_CURRENT: 'Current Joint Angles',
+                    ikreq.SEED_NS_MAP: 'Nullspace Setpoints',
+                   }.get(resp_seeds[0], 'None')
+        print("SUCCESS - Valid Joint Solution Found from Seed Type: %s" %
+              (seed_str,))
         # Format solution into Limb API-compatible dictionary
         limb_joints = dict(zip(resp.joints[0].name, resp.joints[0].position))
-        print limb_joints
+        print "\nIK Joint Solution:\n", limb_joints
+        print "------------------"
+        print "Response Message:\n", resp
     else:
         print("INVALID POSE - No Valid Joint Solution Found.")
 
