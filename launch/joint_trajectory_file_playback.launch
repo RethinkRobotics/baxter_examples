@@ -7,8 +7,9 @@
   <arg name="loops" default="1" />
 
   <!-- Start the Joint Trajectory Action Server -->
-  <node name="rsdk_joint_trajectory_action_server" pkg="baxter_interface"
-  type="joint_trajectory_action_server.py" required="true" />
+  <node name="rsdk_velocity_joint_trajectory_action_server"
+  pkg="baxter_interface" type="joint_trajectory_action_server.py"
+  required="true" args="--mode velocity" />
 
   <!-- Run the Joint Trajectory File Playback Example -->
   <node name="rsdk_joint_trajectory_file_playback" pkg="baxter_examples"
