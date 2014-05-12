@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Copyright (c) 2013, Rethink Robotics
+# Copyright (c) 2013-2014, Rethink Robotics
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -67,8 +67,8 @@ Related examples:
         help='the file name to record to'
     )
     parser.add_argument(
-        '-r', '--record-rate', type=int, default=10, metavar='RECORDRATE',
-        help='rate at which to record'
+        '-r', '--record-rate', type=int, default=100, metavar='RECORDRATE',
+        help='rate at which to record (default: 100)'
     )
     args = parser.parse_args(rospy.myargv()[1:])
 

@@ -1,6 +1,6 @@
 #!/usr/bin/python2
 
-# Copyright (c) 2013, Rethink Robotics
+# Copyright (c) 2013-2014, Rethink Robotics
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -66,7 +66,11 @@ class GripperConnect(object):
 
         # connect callback fns to signals
         if self._gripper.type() != 'custom':
-            self._gripper.calibrate()
+            if not (self._gripper.calibrated() or
+                    self._gripper.calibrate() == True):
+                rospy.logwarn("%s (%s) calibration failed.",
+                              self._gripper.name.capitalize(),
+                              self._gripper.type())
         else:
             msg = (("%s (%s) not capable of gripper commands."
                    " Running cuff-light connection only.") %

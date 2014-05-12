@@ -7,11 +7,11 @@ Code & Tickets
 --------------
 
 +-----------------+----------------------------------------------------------------+
-| Documentation   | https://github.com/RethinkRobotics/sdk-docs/wiki               |
+| Documentation   | http://sdk.rethinkrobotics.com/wiki                            |
 +-----------------+----------------------------------------------------------------+
 | Issues          | https://github.com/RethinkRobotics/baxter_examples/issues      |
 +-----------------+----------------------------------------------------------------+
-| Contributions   | https://github.com/RethinkRobotics/sdk-docs/wiki/Contributions |
+| Contributions   | http://sdk.rethinkrobotics.com/wiki/Contributions              |
 +-----------------+----------------------------------------------------------------+
 
 baxter_examples Repository Overview
@@ -29,9 +29,11 @@ baxter_examples Repository Overview
      |   +-- gripper_joystick.py
      |   +-- gripper_keyboard.py
      |   +-- head_wobbler.py
+     |   +-- ik_service_client.py
      |   +-- joint_position_file_playback.py
      |   +-- joint_position_joystick.py
      |   +-- joint_position_keyboard.py
+     |   +-- joint_position_waypoints.py
      |   +-- joint_recorder.py
      |   +-- joint_torque_springs.py
      |   +-- joint_trajectory_client.py
@@ -40,8 +42,6 @@ baxter_examples Repository Overview
      |   +-- joint_velocity_wobbler.py
      |   +-- navigator_io.py
      |   +-- xdisplay_image.py
-     |   +-- joint_trajectory_action_server.py
-     |   +-- gripper_action_server.py
      |
      +-- launch/                                   example program launch scripts
      |   +-- gripper_action_client.launch
@@ -75,4 +75,4 @@ Other Baxter Repositories
 Latest Release Information
 --------------------------
 
-https://github.com/RethinkRobotics/sdk-docs/wiki/Release-Changes
+http://sdk.rethinkrobotics.com/wiki/Release-Changes

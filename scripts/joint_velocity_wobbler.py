@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Copyright (c) 2013, Rethink Robotics
+# Copyright (c) 2013-2014, Rethink Robotics
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -55,23 +55,26 @@ class Wobbler(object):
         self._left_joint_names = self._left_arm.joint_names()
         self._right_joint_names = self._right_arm.joint_names()
 
+        # control parameters
+        self._rate = 500.0  # Hz
+
         print("Getting robot state... ")
         self._rs = baxter_interface.RobotEnable(CHECK_VERSION)
         self._init_state = self._rs.state().enabled
         print("Enabling robot... ")
         self._rs.enable()
 
-        # set joint state publishing to 100Hz
-        self._pub_rate.publish(100)
+        # set joint state publishing to 500Hz
+        self._pub_rate.publish(self._rate)
 
     def _reset_control_modes(self):
-        rate = rospy.Rate(100)
+        rate = rospy.Rate(self._rate)
         for _ in xrange(100):
             if rospy.is_shutdown():
                 return False
             self._left_arm.exit_control_mode()
             self._right_arm.exit_control_mode()
-            self._pub_rate.publish(100)
+            self._pub_rate.publish(100)  # 100Hz default joint state rate
             rate.sleep()
         return True
 
@@ -98,7 +101,7 @@ class Wobbler(object):
         """
         Performs the wobbling of both arms.
         """
-        rate = rospy.Rate(100)
+        rate = rospy.Rate(self._rate)
         start = rospy.Time.now()
 
         def make_v_func():
@@ -122,7 +125,7 @@ class Wobbler(object):
 
         print("Wobbling. Press Ctrl-C to stop...")
         while not rospy.is_shutdown():
-            self._pub_rate.publish(100)
+            self._pub_rate.publish(self._rate)
             elapsed = rospy.Time.now() - start
             cmd = make_cmd(self._left_joint_names, elapsed)
             self._left_arm.set_joint_velocities(cmd)

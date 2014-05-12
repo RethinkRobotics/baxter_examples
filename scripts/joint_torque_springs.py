@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Copyright (c) 2013, Rethink Robotics
+# Copyright (c) 2013-2014, Rethink Robotics
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -183,7 +183,7 @@ def main():
         '-l', '--limb', dest='limb', required=True, choices=['left', 'right'],
         help='limb on which to attach joint springs'
     )
-    args = parser.parse_args()
+    args = parser.parse_args(rospy.myargv()[1:])
 
     print("Initializing node... ")
     rospy.init_node("rsdk_joint_torque_springs_%s" % (args.limb,))
