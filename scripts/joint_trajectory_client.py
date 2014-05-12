@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Copyright (c) 2013, Rethink Robotics
+# Copyright (c) 2013-2014, Rethink Robotics
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -31,14 +31,13 @@
 Baxter RSDK Joint Trajectory Action Client Example
 """
 import argparse
-from copy import copy
 import sys
+
+from copy import copy
 
 import rospy
 
 import actionlib
-
-import baxter_interface
 
 from control_msgs.msg import (
     FollowJointTrajectoryAction,
@@ -47,6 +46,10 @@ from control_msgs.msg import (
 from trajectory_msgs.msg import (
     JointTrajectoryPoint,
 )
+
+import baxter_interface
+
+from baxter_interface import CHECK_VERSION
 
 
 class Trajectory(object):
@@ -117,7 +120,7 @@ def main():
     print("Initializing node... ")
     rospy.init_node("rsdk_joint_trajectory_client_%s" % (limb,))
     print("Getting robot state... ")
-    rs = baxter_interface.RobotEnable()
+    rs = baxter_interface.RobotEnable(CHECK_VERSION)
     print("Enabling robot... ")
     rs.enable()
     print("Running. Ctrl-c to quit")

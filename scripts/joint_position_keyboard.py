@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Copyright (c) 2013, Rethink Robotics
+# Copyright (c) 2013-2014, Rethink Robotics
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -37,12 +37,14 @@ import rospy
 import baxter_interface
 import baxter_external_devices
 
+from baxter_interface import CHECK_VERSION
+
 
 def map_keyboard():
     left = baxter_interface.Limb('left')
     right = baxter_interface.Limb('right')
-    grip_left = baxter_interface.Gripper('left')
-    grip_right = baxter_interface.Gripper('right')
+    grip_left = baxter_interface.Gripper('left', CHECK_VERSION)
+    grip_right = baxter_interface.Gripper('right', CHECK_VERSION)
     lj = left.joint_names()
     rj = right.joint_names()
 
@@ -134,7 +136,7 @@ See help inside the example with the '?' key for key bindings.
     print("Initializing node... ")
     rospy.init_node("rsdk_joint_position_keyboard")
     print("Getting robot state... ")
-    rs = baxter_interface.RobotEnable()
+    rs = baxter_interface.RobotEnable(CHECK_VERSION)
     init_state = rs.state().enabled
 
     def clean_shutdown():

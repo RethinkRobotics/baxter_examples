@@ -1,6 +1,6 @@
 #!/usr/bin/python2
 
-# Copyright (c) 2013, Rethink Robotics
+# Copyright (c) 2013-2014, Rethink Robotics
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -36,6 +36,7 @@ from baxter_interface import (
     DigitalIO,
     Gripper,
     Navigator,
+    CHECK_VERSION,
 )
 
 
@@ -60,19 +61,25 @@ class GripperConnect(object):
         self._open_io = DigitalIO('%s_lower_button' % (arm,))   # 'circle' btn
         self._light_io = DigitalIO('%s_lower_cuff' % (arm,))    # cuff squeeze
         # outputs
-        self._gripper = Gripper('%s' % (arm,))
+        self._gripper = Gripper('%s' % (arm,), CHECK_VERSION)
         self._nav = Navigator('%s' % (arm,))
 
         # connect callback fns to signals
         if self._gripper.type() != 'custom':
-            self._gripper.calibrate()
-            self._open_io.state_changed.connect(self._open_action)
-            self._close_io.state_changed.connect(self._close_action)
+            if not (self._gripper.calibrated() or
+                    self._gripper.calibrate() == True):
+                rospy.logwarn("%s (%s) calibration failed.",
+                              self._gripper.name.capitalize(),
+                              self._gripper.type())
         else:
             msg = (("%s (%s) not capable of gripper commands."
                    " Running cuff-light connection only.") %
                    (self._gripper.name.capitalize(), self._gripper.type()))
             rospy.logwarn(msg)
+
+        self._gripper.on_type_changed.connect(self._check_calibration)
+        self._open_io.state_changed.connect(self._open_action)
+        self._close_io.state_changed.connect(self._close_action)
 
         if lights:
             self._light_io.state_changed.connect(self._light_action)
@@ -81,12 +88,12 @@ class GripperConnect(object):
                       self._gripper.name.capitalize())
 
     def _open_action(self, value):
-        if value:
+        if value and self._is_grippable():
             rospy.logdebug("gripper open triggered")
             self._gripper.open()
 
     def _close_action(self, value):
-        if value:
+        if value and self._is_grippable():
             rospy.logdebug("gripper close triggered")
             self._gripper.close()
 
@@ -97,6 +104,19 @@ class GripperConnect(object):
             rospy.logdebug("cuff release triggered")
         self._nav.inner_led = value
         self._nav.outer_led = value
+
+    def _check_calibration(self, value):
+        if self._gripper.calibrated():
+            return True
+        elif value == 'electric':
+            rospy.loginfo("calibrating %s...",
+                          self._gripper.name.capitalize())
+            return (self._gripper.calibrate() == True)
+        else:
+            return False
+
+    def _is_grippable(self):
+        return (self._gripper.calibrated() and self._gripper.ready())
 
 
 def main():

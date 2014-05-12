@@ -1,6 +1,6 @@
 #!/usr/bin/python2
 
-# Copyright (c) 2013, Rethink Robotics
+# Copyright (c) 2013-2014, Rethink Robotics
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -64,7 +64,7 @@ def echo_input():
         print ("Button 2: %s" % (v,))
 
     def wheel_moved(v):
-        print ("Wheel: %d" % (v,))
+        print ("Wheel Increment: %d, New Value: %s" % (v, nav.wheel))
 
     nav = baxter_interface.Navigator('left')
     nav.button0_changed.connect(b0_pressed)

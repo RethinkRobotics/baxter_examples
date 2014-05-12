@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Copyright (c) 2013, Rethink Robotics
+# Copyright (c) 2013-2014, Rethink Robotics
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -46,6 +46,7 @@ import baxter_interface
 from baxter_examples.cfg import (
     JointSpringsExampleConfig,
 )
+from baxter_interface import CHECK_VERSION
 
 
 class JointSprings(object):
@@ -80,7 +81,7 @@ class JointSprings(object):
 
         # verify robot is enabled
         print("Getting robot state... ")
-        self._rs = baxter_interface.RobotEnable()
+        self._rs = baxter_interface.RobotEnable(CHECK_VERSION)
         self._init_state = self._rs.state().enabled
         print("Enabling robot... ")
         self._rs.enable()
@@ -182,7 +183,7 @@ def main():
         '-l', '--limb', dest='limb', required=True, choices=['left', 'right'],
         help='limb on which to attach joint springs'
     )
-    args = parser.parse_args()
+    args = parser.parse_args(rospy.myargv()[1:])
 
     print("Initializing node... ")
     rospy.init_node("rsdk_joint_torque_springs_%s" % (args.limb,))

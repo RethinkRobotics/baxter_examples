@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Copyright (c) 2013, Rethink Robotics
+# Copyright (c) 2013-2014, Rethink Robotics
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -34,6 +34,8 @@ import rospy
 
 import baxter_interface
 
+from baxter_interface import CHECK_VERSION
+
 
 class Wobbler(object):
 
@@ -46,7 +48,7 @@ class Wobbler(object):
 
         # verify robot is enabled
         print("Getting robot state... ")
-        self._rs = baxter_interface.RobotEnable()
+        self._rs = baxter_interface.RobotEnable(CHECK_VERSION)
         self._init_state = self._rs.state().enabled
         print("Enabling robot... ")
         self._rs.enable()
