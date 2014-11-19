@@ -49,7 +49,7 @@ class Wobbler(object):
         'Wobbles' both arms by commanding joint velocities sinusoidally.
         """
         self._pub_rate = rospy.Publisher('robot/joint_state_publish_rate',
-                                         UInt16)
+                                         UInt16, queue_size=10)
         self._left_arm = baxter_interface.limb.Limb("left")
         self._right_arm = baxter_interface.limb.Limb("right")
         self._left_joint_names = self._left_arm.joint_names()
