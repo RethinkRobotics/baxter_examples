@@ -77,7 +77,7 @@ class JointSprings(object):
 
         # create cuff disable publisher
         cuff_ns = 'robot/limb/' + limb + '/suppress_cuff_interaction'
-        self._pub_cuff_disable = rospy.Publisher(cuff_ns, Empty)
+        self._pub_cuff_disable = rospy.Publisher(cuff_ns, Empty, queue_size=1)
 
         # verify robot is enabled
         print("Getting robot state... ")
