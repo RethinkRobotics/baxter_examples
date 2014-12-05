@@ -87,6 +87,11 @@ def main():
     The example will command the head to a position.
     Be sure to start Baxter's head_action_server before running this example.
     """
+    arg_fmt = argparse.RawDescriptionHelpFormatter
+    parser = argparse.ArgumentParser(formatter_class=arg_fmt,
+                                     description=main.__doc__)
+    parser.parse_args(rospy.myargv()[1:])
+
     print("Initializing node... ")
     rospy.init_node("rsdk_head_action_client")
     print("Getting robot state... ")
