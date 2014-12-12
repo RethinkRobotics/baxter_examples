@@ -131,6 +131,10 @@ def main():
 
     traj = Trajectory(limb)
     rospy.on_shutdown(traj.stop)
+    # Command Current Joint Positions first
+    limb_interface = baxter_interface.limb.Limb(limb)
+    current_angles = [limb_interface.joint_angle(joint) for joint in limb_interface.joint_names()]
+    traj.add_point(current_angles, 0.0)
 
     p1 = positions[limb]
     traj.add_point(p1, 7.0)
