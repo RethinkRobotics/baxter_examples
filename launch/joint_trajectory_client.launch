@@ -5,7 +5,7 @@
 
   <!-- Start the Joint Trajectory Action Server -->
   <node name="rsdk_joint_trajectory_action_server" pkg="baxter_interface"
-  type="joint_trajectory_action_server.py" args="--limb $(arg limb)"
+  type="joint_trajectory_action_server.py" args="--limb $(arg limb) --mode position"
   required="true" />
 
   <!-- Run the Joint Trajectory Action Test Example -->

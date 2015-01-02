@@ -68,8 +68,8 @@ class Trajectory(object):
         )
 
         #verify joint trajectory action servers are available
-        l_server_up = self._left_client.wait_for_server(rospy.Duration(1.0))
-        r_server_up = self._right_client.wait_for_server(rospy.Duration(1.0))
+        l_server_up = self._left_client.wait_for_server(rospy.Duration(10.0))
+        r_server_up = self._right_client.wait_for_server(rospy.Duration(10.0))
         if not l_server_up or not r_server_up:
             msg = ("Action server not available."
                    " Verify action server availability.")
