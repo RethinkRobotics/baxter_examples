@@ -60,6 +60,8 @@ class Trajectory(object):
             FollowJointTrajectoryAction,
         )
         self._goal = FollowJointTrajectoryGoal()
+        self._goal_time_tolerance = rospy.Time(0.1)
+        self._goal.goal_time_tolerance = self._goal_time_tolerance
         server_up = self._client.wait_for_server(timeout=rospy.Duration(10.0))
         if not server_up:
             rospy.logerr("Timed out waiting for Joint Trajectory"
@@ -90,6 +92,7 @@ class Trajectory(object):
 
     def clear(self, limb):
         self._goal = FollowJointTrajectoryGoal()
+        self._goal.goal_time_tolerance = self._goal_time_tolerance
         self._goal.trajectory.joint_names = [limb + '_' + joint for joint in \
             ['s0', 's1', 'e0', 'e1', 'w0', 'w1', 'w2']]
 
