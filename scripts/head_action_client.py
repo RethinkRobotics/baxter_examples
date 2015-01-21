@@ -28,7 +28,7 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 """
-Baxter RSDK Gripper Action Client Example
+Baxter RSDK Head Action Client Example
 """
 import sys
 import argparse
@@ -38,35 +38,33 @@ import rospy
 import actionlib
 
 from control_msgs.msg import (
-    GripperCommandAction,
-    GripperCommandGoal,
+    SingleJointPositionAction,
+    SingleJointPositionGoal,
 )
 
 import baxter_interface
 
 from baxter_interface import CHECK_VERSION
 
-
-class GripperClient(object):
-    def __init__(self, gripper):
-        ns = 'robot/end_effector/' + gripper + '_gripper/'
+class HeadClient(object):
+    def __init__(self):
+        ns = 'robot/head/head_action'
         self._client = actionlib.SimpleActionClient(
-            ns + "gripper_action",
-            GripperCommandAction,
+            ns,
+            SingleJointPositionAction
         )
-        self._goal = GripperCommandGoal()
+        self._goal = SingleJointPositionGoal()
 
-        # Wait 10 Seconds for the gripper action server to start or exit
+        # Wait 10 Seconds for the head action server to start or exit
         if not self._client.wait_for_server(rospy.Duration(10.0)):
-            rospy.logerr("Exiting - %s Gripper Action Server Not Found" %
-                         (gripper.capitalize(),))
+            rospy.logerr("Exiting - Head Action Server Not Found")
             rospy.signal_shutdown("Action Server not found")
             sys.exit(1)
         self.clear()
 
-    def command(self, position, effort):
-        self._goal.command.position = position
-        self._goal.command.max_effort = effort
+    def command(self, position, velocity):
+        self._goal.position = position
+        self._goal.max_velocity = velocity
         self._client.send_goal(self._goal)
 
     def stop(self):
@@ -77,53 +75,43 @@ class GripperClient(object):
         return self._client.get_result()
 
     def clear(self):
-        self._goal = GripperCommandGoal()
-
+        self._goal = SingleJointPositionGoal()
 
 def main():
-    """RSDK Gripper Example: Action Client
+    """RSDK Head Example: Action Client
 
-    Demonstrates creating a client of the Gripper Action Server,
+    Demonstrates creating a client of the Head Action Server,
     which enables sending commands of standard action type
-    control_msgs/GripperCommand.
+    control_msgs/SingleJointPosition.
 
-    The example will command the grippers to a number of positions
-    while specifying moving force or vacuum sensor threshold. Be sure
-    to start Baxter's gripper_action_server before running this example.
+    The example will command the head to a position.
+    Be sure to start Baxter's head_action_server before running this example.
     """
     arg_fmt = argparse.RawDescriptionHelpFormatter
     parser = argparse.ArgumentParser(formatter_class=arg_fmt,
                                      description=main.__doc__)
-    parser.add_argument(
-        '-g', '--gripper', dest='gripper', required=True,
-        choices=['left', 'right'],
-        help='which gripper to send action commands'
-    )
-    args = parser.parse_args(rospy.myargv()[1:])
-    gripper = args.gripper
+    parser.parse_args(rospy.myargv()[1:])
 
     print("Initializing node... ")
-    rospy.init_node("rsdk_gripper_action_client_%s" % (gripper,))
+    rospy.init_node("rsdk_head_action_client")
     print("Getting robot state... ")
     rs = baxter_interface.RobotEnable(CHECK_VERSION)
     print("Enabling robot... ")
     rs.enable()
     print("Running. Ctrl-c to quit")
 
-    gc = GripperClient(gripper)
-    gc.command(position=0.0, effort=50.0)
-    gc.wait()
-    gc.command(position=100.0, effort=50.0)
-    gc.wait()
-    gc.command(position=25.0, effort=40.0)
-    gc.wait()
-    gc.command(position=75.0, effort=20.0)
-    gc.wait()
-    gc.command(position=0.0, effort=30.0)
-    gc.wait()
-    gc.command(position=100.0, effort=40.0)
-    print gc.wait()
-    print "Exiting - Gripper Action Test Example Complete"
+    hc = HeadClient()
+    hc.command(position=0.0, velocity=100.0)
+    hc.wait()
+    hc.command(position=1.57, velocity=10.0)
+    hc.wait()
+    hc.command(position=0.0, velocity=80.0)
+    hc.wait()
+    hc.command(position=-1.0, velocity=40.0)
+    hc.wait()
+    hc.command(position=0.0, velocity=60.0)
+    print hc.wait()
+    print "Exiting - Head Action Test Example Complete"
 
 if __name__ == "__main__":
     main()

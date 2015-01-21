@@ -1,6 +1,6 @@
 #!/usr/bin/python2
 
-# Copyright (c) 2013-2014, Rethink Robotics
+# Copyright (c) 2013-2015, Rethink Robotics
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -33,7 +33,7 @@ import argparse
 
 import rospy
 
-import cv
+import cv2
 import cv_bridge
 
 from sensor_msgs.msg import (
@@ -48,9 +48,9 @@ def send_image(path):
 
     @param path: path to the image file to load and send
     """
-    img = cv.LoadImage(path)
-    msg = cv_bridge.CvBridge().cv_to_imgmsg(img, encoding="bgr8")
-    pub = rospy.Publisher('/robot/xdisplay', Image, latch=True)
+    img = cv2.imread(path)
+    msg = cv_bridge.CvBridge().cv2_to_imgmsg(img, encoding="bgr8")
+    pub = rospy.Publisher('/robot/xdisplay', Image, latch=True, queue_size=1)
     pub.publish(msg)
     # Sleep to allow for image to be published.
     rospy.sleep(1)

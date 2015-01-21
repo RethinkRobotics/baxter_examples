@@ -1,3 +1,11 @@
+1.1.0 (2015-1-2)
+---------------------------------
+- Updates baxter_examples to ROS Indigo
+- Updates xdisplay_image to properly publish images with opencv2
+- Updates joint_trajectory_client to have a goal tolerance, and supplies current joint angles at time 0.0
+- Updates joint_trajectory_file_playback to wait for the joint trajectory action server for 10.0 seconds
+- Adds head_action_client example program
+
 1.0.0 (2014-5-1)
 ---------------------------------
 - Adds joint_position_waypoints example program
