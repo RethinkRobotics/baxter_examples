@@ -33,6 +33,7 @@ Baxter RSDK Joint Trajectory Example: file playback
 import argparse
 import operator
 import sys
+import threading
 
 from bisect import bisect
 from copy import copy
@@ -87,6 +88,11 @@ class Trajectory(object):
         #gripper interface - for gripper command playback
         self._l_gripper = baxter_interface.Gripper('left', CHECK_VERSION)
         self._r_gripper = baxter_interface.Gripper('right', CHECK_VERSION)
+
+        #flag to signify the arm trajectories have begun executing
+        self._arm_trajectory_started = False
+        #reentrant lock to prevent same-thread lockout
+        self._lock = threading.RLock()
 
         # Verify Grippers Have No Errors and are Calibrated
         if self._l_gripper.error():
@@ -233,12 +239,31 @@ class Trajectory(object):
             cur_cmd = [cmd['right_gripper']]
             self._add_point(cur_cmd, 'right_gripper', values[0] + start_offset)
 
+    def _feedback(self, data):
+        if not self._get_trajectory_flag():
+            self._set_trajectory_flag(value=True)
+
+    def _set_trajectory_flag(self, value=False):
+        with self._lock:
+            # Assign a value to the flag
+            self._arm_trajectory_started = value
+
+    def _get_trajectory_flag(self):
+        temp_flag = False
+        with self._lock:
+            # Copy to external variable
+            temp_flag = self._arm_trajectory_started
+        return temp_flag
+
     def start(self):
         """
         Sends FollowJointTrajectoryAction request
         """
-        self._left_client.send_goal(self._l_goal)
-        self._right_client.send_goal(self._r_goal)
+        self._left_client.send_goal(self._l_goal, feedback_cb=self._feedback)
+        self._right_client.send_goal(self._r_goal, feedback_cb=self._feedback)
+        # Syncronize playback by waiting for the trajectories to start
+        while not rospy.is_shutdown() and not self._get_trajectory_flag():
+            rospy.sleep(0.05)
         self._execute_gripper_commands()
 
     def stop(self):
