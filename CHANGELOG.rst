@@ -1,3 +1,7 @@
+1.1.1 (2015-4-15)
+---------------------------------
+- Updates gripper playback to synchronize with the arm motion in joint_trajectory_file_playback
+
 1.1.0 (2015-1-2)
 ---------------------------------
 - Updates baxter_examples to ROS Indigo
