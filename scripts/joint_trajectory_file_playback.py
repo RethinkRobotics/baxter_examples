@@ -110,6 +110,8 @@ class Trajectory(object):
         self._l_grip = FollowJointTrajectoryGoal()
         self._r_grip = FollowJointTrajectoryGoal()
 
+        # Timing offset to prevent gripper playback before trajectory has started
+        self._trajectory_start_offset = rospy.Duration(0.0)
         #param namespace
         self._param_ns = '/rsdk_joint_trajectory_action_server/'
 
@@ -228,7 +230,18 @@ class Trajectory(object):
             cmd, values = self._clean_line(values, joint_names)
             #find allowable time offset for move to start position
             if idx == 0:
+                # Set the initial position to be the current pose.
+                # This ensures we move slowly to the starting point of the
+                # trajectory from the current pose - The user may have moved
+                # arm since recording
+                cur_cmd = [self._l_arm.joint_angle(jnt) for jnt in self._l_goal.trajectory.joint_names]
+                self._add_point(cur_cmd, 'left', 0.0)
+                cur_cmd = [self._r_arm.joint_angle(jnt) for jnt in self._r_goal.trajectory.joint_names]
+                self._add_point(cur_cmd, 'right', 0.0)
                 start_offset = find_start_offset(cmd)
+                # Gripper playback won't start until the starting movement's
+                # duration has passed, and the actual trajectory playback begins
+                self._trajectory_start_offset = rospy.Duration(start_offset + values[0])
             #add a point for this set of commands with recorded time
             cur_cmd = [cmd[jnt] for jnt in self._l_goal.trajectory.joint_names]
             self._add_point(cur_cmd, 'left', values[0] + start_offset)
@@ -240,7 +253,10 @@ class Trajectory(object):
             self._add_point(cur_cmd, 'right_gripper', values[0] + start_offset)
 
     def _feedback(self, data):
-        if not self._get_trajectory_flag():
+        # Test to see if the actual playback time has exceeded
+        # the move-to-start-pose timing offset
+        if (not self._get_trajectory_flag() and
+              data.actual.time_from_start >= self._trajectory_start_offset):
             self._set_trajectory_flag(value=True)
 
     def _set_trajectory_flag(self, value=False):
