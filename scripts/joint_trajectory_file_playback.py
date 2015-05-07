@@ -111,7 +111,9 @@ class Trajectory(object):
         self._r_grip = FollowJointTrajectoryGoal()
 
         # Timing offset to prevent gripper playback before trajectory has started
+        self._slow_move_offset = 0.0
         self._trajectory_start_offset = rospy.Duration(0.0)
+
         #param namespace
         self._param_ns = '/rsdk_joint_trajectory_action_server/'
 
@@ -241,6 +243,7 @@ class Trajectory(object):
                 start_offset = find_start_offset(cmd)
                 # Gripper playback won't start until the starting movement's
                 # duration has passed, and the actual trajectory playback begins
+                self._slow_move_offset = start_offset
                 self._trajectory_start_offset = rospy.Duration(start_offset + values[0])
             #add a point for this set of commands with recorded time
             cur_cmd = [cmd[jnt] for jnt in self._l_goal.trajectory.joint_names]
@@ -305,7 +308,9 @@ class Trajectory(object):
         #total time trajectory expected for trajectory execution plus a buffer
         last_time = self._r_goal.trajectory.points[-1].time_from_start.to_sec()
         time_buffer = rospy.get_param(self._param_ns + 'goal_time', 0.0) + 1.5
-        timeout = rospy.Duration(last_time + time_buffer)
+        timeout = rospy.Duration(self._slow_move_offset +
+                                 last_time +
+                                 time_buffer)
 
         l_finish = self._left_client.wait_for_result(timeout)
         r_finish = self._right_client.wait_for_result(timeout)
