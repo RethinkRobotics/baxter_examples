@@ -1,3 +1,11 @@
+1.1.1 (2015-5-15)
+---------------------------------
+- Added a calculation to increase the amount of time allowed to move arm to the
+  initial pose of joint_trajectory_playback
+- Fixed an issue in syncing gripper playback with joint_trajectory_playback arm execution
+- Fixed a timing issue preventing joint_trajectory_playback from completing execution
+- Removed incorrect internal tag for baxterworking.png
+
 1.1.0 (2015-1-2)
 ---------------------------------
 - Updates baxter_examples to ROS Indigo

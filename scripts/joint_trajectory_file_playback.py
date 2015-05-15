@@ -33,6 +33,7 @@ Baxter RSDK Joint Trajectory Example: file playback
 import argparse
 import operator
 import sys
+import threading
 
 from bisect import bisect
 from copy import copy
@@ -88,6 +89,11 @@ class Trajectory(object):
         self._l_gripper = baxter_interface.Gripper('left', CHECK_VERSION)
         self._r_gripper = baxter_interface.Gripper('right', CHECK_VERSION)
 
+        #flag to signify the arm trajectories have begun executing
+        self._arm_trajectory_started = False
+        #reentrant lock to prevent same-thread lockout
+        self._lock = threading.RLock()
+
         # Verify Grippers Have No Errors and are Calibrated
         if self._l_gripper.error():
             self._l_gripper.reset()
@@ -103,6 +109,10 @@ class Trajectory(object):
         #gripper goal trajectories
         self._l_grip = FollowJointTrajectoryGoal()
         self._r_grip = FollowJointTrajectoryGoal()
+
+        # Timing offset to prevent gripper playback before trajectory has started
+        self._slow_move_offset = 0.0
+        self._trajectory_start_offset = rospy.Duration(0.0)
 
         #param namespace
         self._param_ns = '/rsdk_joint_trajectory_action_server/'
@@ -222,7 +232,19 @@ class Trajectory(object):
             cmd, values = self._clean_line(values, joint_names)
             #find allowable time offset for move to start position
             if idx == 0:
+                # Set the initial position to be the current pose.
+                # This ensures we move slowly to the starting point of the
+                # trajectory from the current pose - The user may have moved
+                # arm since recording
+                cur_cmd = [self._l_arm.joint_angle(jnt) for jnt in self._l_goal.trajectory.joint_names]
+                self._add_point(cur_cmd, 'left', 0.0)
+                cur_cmd = [self._r_arm.joint_angle(jnt) for jnt in self._r_goal.trajectory.joint_names]
+                self._add_point(cur_cmd, 'right', 0.0)
                 start_offset = find_start_offset(cmd)
+                # Gripper playback won't start until the starting movement's
+                # duration has passed, and the actual trajectory playback begins
+                self._slow_move_offset = start_offset
+                self._trajectory_start_offset = rospy.Duration(start_offset + values[0])
             #add a point for this set of commands with recorded time
             cur_cmd = [cmd[jnt] for jnt in self._l_goal.trajectory.joint_names]
             self._add_point(cur_cmd, 'left', values[0] + start_offset)
@@ -233,12 +255,34 @@ class Trajectory(object):
             cur_cmd = [cmd['right_gripper']]
             self._add_point(cur_cmd, 'right_gripper', values[0] + start_offset)
 
+    def _feedback(self, data):
+        # Test to see if the actual playback time has exceeded
+        # the move-to-start-pose timing offset
+        if (not self._get_trajectory_flag() and
+              data.actual.time_from_start >= self._trajectory_start_offset):
+            self._set_trajectory_flag(value=True)
+
+    def _set_trajectory_flag(self, value=False):
+        with self._lock:
+            # Assign a value to the flag
+            self._arm_trajectory_started = value
+
+    def _get_trajectory_flag(self):
+        temp_flag = False
+        with self._lock:
+            # Copy to external variable
+            temp_flag = self._arm_trajectory_started
+        return temp_flag
+
     def start(self):
         """
         Sends FollowJointTrajectoryAction request
         """
-        self._left_client.send_goal(self._l_goal)
-        self._right_client.send_goal(self._r_goal)
+        self._left_client.send_goal(self._l_goal, feedback_cb=self._feedback)
+        self._right_client.send_goal(self._r_goal, feedback_cb=self._feedback)
+        # Syncronize playback by waiting for the trajectories to start
+        while not rospy.is_shutdown() and not self._get_trajectory_flag():
+            rospy.sleep(0.05)
         self._execute_gripper_commands()
 
     def stop(self):
@@ -264,7 +308,9 @@ class Trajectory(object):
         #total time trajectory expected for trajectory execution plus a buffer
         last_time = self._r_goal.trajectory.points[-1].time_from_start.to_sec()
         time_buffer = rospy.get_param(self._param_ns + 'goal_time', 0.0) + 1.5
-        timeout = rospy.Duration(last_time + time_buffer)
+        timeout = rospy.Duration(self._slow_move_offset +
+                                 last_time +
+                                 time_buffer)
 
         l_finish = self._left_client.wait_for_result(timeout)
         r_finish = self._right_client.wait_for_result(timeout)
