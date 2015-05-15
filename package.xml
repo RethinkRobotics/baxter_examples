@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package>
   <name>baxter_examples</name>
-  <version>1.1.0</version>
+  <version>1.1.1</version>
   <description>
     Example programs for Baxter SDK usage.
   </description>
