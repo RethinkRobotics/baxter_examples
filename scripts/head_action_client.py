@@ -101,15 +101,15 @@ def main():
     print("Running. Ctrl-c to quit")
 
     hc = HeadClient()
-    hc.command(position=0.0, velocity=100.0)
+    hc.command(position=0.0, velocity=1.0)
     hc.wait()
-    hc.command(position=1.57, velocity=10.0)
+    hc.command(position=1.57, velocity=0.1)
     hc.wait()
-    hc.command(position=0.0, velocity=80.0)
+    hc.command(position=0.0, velocity=0.8)
     hc.wait()
-    hc.command(position=-1.0, velocity=40.0)
+    hc.command(position=-1.0, velocity=0.4)
     hc.wait()
-    hc.command(position=0.0, velocity=60.0)
+    hc.command(position=0.0, velocity=0.6)
     print hc.wait()
     print "Exiting - Head Action Test Example Complete"
 

@@ -86,7 +86,7 @@ class Wobbler(object):
             while (not rospy.is_shutdown() and
                    not (abs(self._head.pan() - angle) <=
                        baxter_interface.HEAD_PAN_ANGLE_TOLERANCE)):
-                self._head.set_pan(angle, speed=30, timeout=0)
+                self._head.set_pan(angle, speed=0.3, timeout=0)
                 control_rate.sleep()
             command_rate.sleep()
 
