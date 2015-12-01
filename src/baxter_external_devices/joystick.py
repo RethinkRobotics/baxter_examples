@@ -233,30 +233,28 @@ class LogitechController(Joystick):
         Args:
               msg(Joy): a joystick input message
         """
-
-        self._controls['btnLeft'] = (msg.buttons[0] == 1)
+        self._controls['btnLeft'] = (msg.buttons[2] == 1)
         self._controls['btnUp'] = (msg.buttons[3] == 1)
-        self._controls['btnDown'] = (msg.buttons[1] == 1)
-        self._controls['btnRight'] = (msg.buttons[2] == 1)
+        self._controls['btnDown'] = (msg.buttons[0] == 1)
+        self._controls['btnRight'] = (msg.buttons[1] == 1)
 
-        self._controls['dPadUp'] = (msg.axes[5] > 0.5)
-        self._controls['dPadDown'] = (msg.axes[5] < -0.5)
-        self._controls['dPadLeft'] = (msg.axes[4] > 0.5)
-        self._controls['dPadRight'] = (msg.axes[4] < -0.5)
+        self._controls['dPadUp'] = (msg.axes[7] > 0.5)
+        self._controls['dPadDown'] = (msg.axes[7] < -0.5)
+        self._controls['dPadLeft'] = (msg.axes[6] > 0.5)
+        self._controls['dPadRight'] = (msg.axes[6] < -0.5)
 
         self._controls['leftStickHorz'] = msg.axes[0]
         self._controls['leftStickVert'] = msg.axes[1]
-        self._controls['rightStickHorz'] = msg.axes[2]
-        self._controls['rightStickVert'] = msg.axes[3]
+        self._controls['rightStickHorz'] = msg.axes[3]
+        self._controls['rightStickVert'] = msg.axes[4]
 
         self._controls['leftBumper'] = (msg.buttons[4] == 1)
         self._controls['rightBumper'] = (msg.buttons[5] == 1)
-        self._controls['leftTrigger'] = (msg.buttons[6] == 1)
-        self._controls['rightTrigger'] = (msg.buttons[7] == 1)
+        self._controls['leftTrigger'] = (msg.axes[2] < 0.0)
+        self._controls['rightTrigger'] = (msg.axes[5] < 0.0)
 
-        self._controls['function1'] = (msg.buttons[8] == 1)
-        self._controls['function2'] = (msg.buttons[9] == 1)
-
+        self._controls['function1'] = (msg.buttons[6] == 1)
+        self._controls['function2'] = (msg.buttons[7] == 1)
 
 class PS3Controller(Joystick):
     """
