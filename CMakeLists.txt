@@ -5,6 +5,7 @@ find_package(catkin
   REQUIRED
   COMPONENTS
   rospy
+  xacro
   actionlib
   sensor_msgs
   control_msgs
@@ -24,6 +25,7 @@ generate_dynamic_reconfigure_options(
 catkin_package(
   CATKIN_DEPENDS
   rospy
+  xacro
   actionlib
   sensor_msgs
   control_msgs
