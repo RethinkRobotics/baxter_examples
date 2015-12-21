@@ -88,11 +88,11 @@ def main():
         help='Path to URDF file to send'
     )
     required.add_argument(
-        '-l', '--link', required=False, default="left_hand"
+        '-l', '--link', required=False, default="left_hand",
         help='URDF Link already to attach fragment to (usually <left/right>_hand)'
     )
     required.add_argument(
-        '-j', '--joint', required=False, defult"left_gripper_base"
+        '-j', '--joint', required=False, default="left_gripper_base",
         help='Root joint for fragment (usually <left/right>_gripper_base)'
     )
     args = parser.parse_args(rospy.myargv()[1:])
@@ -102,7 +102,7 @@ def main():
     if not os.access(args.file, os.R_OK):
         rospy.logerr("Cannot read file at '%s'" % (args.file,))
         return 1
-    send_urdf(args.joint, args.link, args.file)
+    send_urdf(args.link, args.joint, args.file)
     return 0
 
 if __name__ == '__main__':
