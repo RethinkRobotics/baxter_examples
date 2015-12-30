@@ -1,3 +1,11 @@
+1.2.0 (2015-12-21)
+---------------------------------
+- Added a URDF Fragment publishing example to demonstrate URDF additions to a Real Baxter
+- The head_pan speed range has been changed to [0, 1.0]. Updated the examples & head action client accordingly
+- Updated Digtial IO example to use the new light names for the navigator
+- Remapped Joy stick example's Logitech controller to be similar to the Xbox controls
+- Fixed a bug causing Gripper timing to lag in the joint playback example
+
 1.1.1 (2015-5-15)
 ---------------------------------
 - Added a calculation to increase the amount of time allowed to move arm to the

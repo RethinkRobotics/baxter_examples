@@ -113,6 +113,7 @@ class Trajectory(object):
         # Timing offset to prevent gripper playback before trajectory has started
         self._slow_move_offset = 0.0
         self._trajectory_start_offset = rospy.Duration(0.0)
+        self._trajectory_actual_offset = rospy.Duration(0.0)
 
         #param namespace
         self._param_ns = '/rsdk_joint_trajectory_action_server/'
@@ -121,7 +122,7 @@ class Trajectory(object):
         self._gripper_rate = 20.0  # Hz
 
     def _execute_gripper_commands(self):
-        start_time = rospy.get_time()
+        start_time = rospy.get_time() - self._trajectory_actual_offset.to_sec()
         r_cmd = self._r_grip.trajectory.points
         l_cmd = self._l_grip.trajectory.points
         pnt_times = [pnt.time_from_start.to_sec() for pnt in r_cmd]
@@ -261,6 +262,7 @@ class Trajectory(object):
         if (not self._get_trajectory_flag() and
               data.actual.time_from_start >= self._trajectory_start_offset):
             self._set_trajectory_flag(value=True)
+            self._trajectory_actual_offset = data.actual.time_from_start
 
     def _set_trajectory_flag(self, value=False):
         with self._lock:
